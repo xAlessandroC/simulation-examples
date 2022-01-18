@@ -51,6 +51,12 @@ class RegistrationVim : public cSimpleModule
 
         virtual void handleMessage(cMessage *msg);
 
+    private:
+
+        inet::Packet* createRegistrationPacket();
+
+        inet::Packet* createInstantiationPacket();
+
 };
 
 

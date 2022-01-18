@@ -1,8 +1,8 @@
 version 3
-run General-0-20220114-17:58:03-11503
+run General-0-20220118-11:14:34-54766
 attr configname General
-attr datetime 20220114-17:58:03
-attr datetimef 20220114-175803
+attr datetime 20220118-11:14:34
+attr datetimef 20220118-111434
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
@@ -10,7 +10,7 @@ attr iterationvarsd ""
 attr iterationvarsf ""
 attr measurement ""
 attr network simulation_examples.simulations.mechostdyn_test.MECHOSTDYN_test1
-attr processid 11503
+attr processid 54766
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -51,7 +51,7 @@ config *.mechost.app[1].mecOrchestratorAddress "\"mechost\""
 config *.car.numApps 1
 config *.car.app[0].typename RegistrationVim
 config *.car.app[0].localPort 3333
-config *.car.app[0].destPort 3333
+config *.car.app[0].destPort 3334
 config *.car.app[0].destAddress "\"mechost\""
 config *.car.app[0].localAddress "\"car\""
 
@@ -200,28 +200,28 @@ par MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc interactiveRlc 1
 attr enum TM,UM,AM,UNKNOWN_RLC_TYPE
 par MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc backgroundRlc 1
 attr enum TM,UM,AM,UNKNOWN_RLC_TYPE
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToLowerLayer:count 1
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToLowerLayer:count 2
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToLowerLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToLowerLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToUpperLayer:count 1
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToUpperLayer:count 2
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToUpperLayer:sum(packetBytes) 228
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc sentPacketToUpperLayer:sum(packetBytes) 2048
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromLowerLayer:count 1
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromLowerLayer:count 2
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromLowerLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromLowerLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromUpperLayer:count 1
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromUpperLayer:count 2
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromUpperLayer:sum(packetBytes) 228
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.pdcpRrc receivedPacketFromUpperLayer:sum(packetBytes) 2048
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
 par MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.tm typename "\"simu5g.stack.rlc.LteRlcTm\""
@@ -335,11 +335,11 @@ scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um rlcCellPacketLossDl:mean 0
 attr source rlcCellPacketLossDl
 attr title "rlc Cell Packet Loss, mean"
 attr unit ""
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um rlcCellThroughputDl:mean 446.82926829268
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um rlcCellThroughputDl:mean 3732.1951219512
 attr source rlcCellThroughputDl
 attr title "Cell Throughput at the rlc layer DL, mean"
 attr unit Bps
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um rlcCellThroughputUl:mean 224.50980392157
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um rlcCellThroughputUl:mean 1740.6862745098
 attr source rlcCellThroughputUl
 attr title "Cell Throughput at the rlc layer UL, mean"
 attr unit Bps
@@ -382,25 +382,25 @@ attr unit ""
 scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um sentPacketToLowerLayer:count 1
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um sentPacketToLowerLayer:sum(packetBytes) 231
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um sentPacketToLowerLayer:sum(packetBytes) 2052
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um sentPacketToUpperLayer:count 1
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um sentPacketToUpperLayer:count 2
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um sentPacketToUpperLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um sentPacketToUpperLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source sentPacketToUpperLayer
 scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um receivedPacketFromLowerLayer:count 2
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um receivedPacketFromLowerLayer:sum(packetBytes) 233
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um receivedPacketFromLowerLayer:sum(packetBytes) 2054
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um receivedPacketFromUpperLayer:count 1
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um receivedPacketFromUpperLayer:count 2
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um receivedPacketFromUpperLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.um receivedPacketFromUpperLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
 par MECHOSTDYN_test1.gNodeB1.cellularNic.rlc.am typename "\"simu5g.stack.rlc.LteRlcAm\""
@@ -718,11 +718,11 @@ scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac macCellThroughputD2D:mean -nan
 attr source macCellThroughputD2D
 attr title "Cell Throughput at the MAC layer D2D, mean"
 attr unit Bps
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac avgServedBlocksUl:mean 0.0032599837000815
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac avgServedBlocksUl:mean 0.0276008492569
 attr source avgServedBlocksUl
 attr title "LTE Avg Served Blocks Ul, mean"
 attr unit blocks
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac avgServedBlocksDl:mean 0.0016299918500407
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac avgServedBlocksDl:mean 0.010615711252654
 attr source avgServedBlocksDl
 attr title "LTE Avg Served Blocks Dl, mean"
 attr unit blocks
@@ -814,11 +814,11 @@ scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac macCellPacketLossDl:mean 0
 attr source macCellPacketLossDl
 attr title "Mac Cell Packet Loss Dl, mean"
 attr unit ""
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac macCellThroughputDl:mean 458.53658536585
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac macCellThroughputDl:mean 4011.7073170732
 attr source macCellThroughputDl
 attr title "Cell Throughput at the MAC layer DL, mean"
 attr unit Bps
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac macCellThroughputUl:mean 186.11694677871
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac macCellThroughputUl:mean 1078.7640056022
 attr source macCellThroughputUl
 attr title "Cell Throughput at the MAC layer UL, mean"
 attr unit Bps
@@ -841,25 +841,25 @@ attr unit s
 scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac sentPacketToLowerLayer:count 8
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac sentPacketToLowerLayer:sum(packetBytes) 240
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac sentPacketToLowerLayer:sum(packetBytes) 2061
 attr interpolationmode none
 attr source sentPacketToLowerLayer
 scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac sentPacketToUpperLayer:count 3
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac sentPacketToUpperLayer:sum(packetBytes) 234
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac sentPacketToUpperLayer:sum(packetBytes) 2055
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromLowerLayer:count 415
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromLowerLayer:count 477
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromLowerLayer:sum(packetBytes) 745
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromLowerLayer:sum(packetBytes) 4449
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromUpperLayer:count 2
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromUpperLayer:count 3
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
-scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromUpperLayer:sum(packetBytes) 462
+scalar MECHOSTDYN_test1.gNodeB1.cellularNic.mac receivedPacketFromUpperLayer:sum(packetBytes) 4106
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
 par MECHOSTDYN_test1.gNodeB1.cellularNic.phy typename "\"simu5g.stack.phy.LtePhyEnbD2D\""
@@ -1650,7 +1650,7 @@ scalar MECHOSTDYN_test1.mechost.udp packetReceived:count 1
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, count"
-scalar MECHOSTDYN_test1.mechost.udp packetReceived:sum(packetBytes) 208
+scalar MECHOSTDYN_test1.mechost.udp packetReceived:sum(packetBytes) 2008
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, sum(packetBytes)"
@@ -1910,16 +1910,16 @@ attr source sentPacketToLowerLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc sentPacketToLowerLayer:sum(packetBytes) 0
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc sentPacketToUpperLayer:count 1
+scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc sentPacketToUpperLayer:count 2
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc sentPacketToUpperLayer:sum(packetBytes) 228
+scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc sentPacketToUpperLayer:sum(packetBytes) 2048
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc receivedPacketFromLowerLayer:count 1
+scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc receivedPacketFromLowerLayer:count 2
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc receivedPacketFromLowerLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc receivedPacketFromLowerLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.pdcpRrc receivedPacketFromUpperLayer:count 0
@@ -2594,7 +2594,7 @@ scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um rlcDelayUl:mean -nan
 attr source rlcDelayUl
 attr title "Delay at the rlc layer UL, mean"
 attr unit s
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um rlcThroughputDl:mean 223.41463414634
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um rlcThroughputDl:mean 1732.1951219512
 attr source rlcThroughputDl
 attr title "Throughput at the rlc layer DL, mean"
 attr unit Bps
@@ -2624,16 +2624,16 @@ attr source sentPacketToLowerLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um sentPacketToLowerLayer:sum(packetBytes) 0
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um sentPacketToUpperLayer:count 1
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um sentPacketToUpperLayer:count 2
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um sentPacketToUpperLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um sentPacketToUpperLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source sentPacketToUpperLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um receivedPacketFromLowerLayer:count 1
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um receivedPacketFromLowerLayer:sum(packetBytes) 231
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um receivedPacketFromLowerLayer:sum(packetBytes) 2052
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.nrRlc.um receivedPacketFromUpperLayer:count 0
@@ -2863,7 +2863,7 @@ scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac macDelayUl:mean -nan
 attr source macDelayUl
 attr title "Delay at the MAC layer UL, mean"
 attr unit s
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac macThroughputDl:mean 227.31707317073
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac macThroughputDl:mean 2003.9024390244
 attr source macThroughputDl
 attr title "Throughput at the MAC layer DL, mean"
 attr unit Bps
@@ -2880,13 +2880,13 @@ attr source sentPacketToLowerLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac sentPacketToUpperLayer:count 1
 attr interpolationmode none
 attr source sentPacketToUpperLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac sentPacketToUpperLayer:sum(packetBytes) 231
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac sentPacketToUpperLayer:sum(packetBytes) 2052
 attr interpolationmode none
 attr source sentPacketToUpperLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac receivedPacketFromLowerLayer:count 1
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac receivedPacketFromLowerLayer:sum(packetBytes) 233
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac receivedPacketFromLowerLayer:sum(packetBytes) 2054
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
 scalar MECHOSTDYN_test1.mechost.cellularNic.nrMac receivedPacketFromUpperLayer:count 0
@@ -2991,7 +2991,7 @@ scalar MECHOSTDYN_test1.mechost.cellularNic.nrChannelModel[0] rcvdSinrUl:mean -n
 attr source rcvdSinrUl
 attr title "SINR measured at packet reception, UL, mean"
 attr unit dB
-scalar MECHOSTDYN_test1.mechost.cellularNic.nrChannelModel[0] rcvdSinrDl:mean 44.454719433313
+scalar MECHOSTDYN_test1.mechost.cellularNic.nrChannelModel[0] rcvdSinrDl:mean 46.019418484357
 attr source rcvdSinrDl
 attr title "SINR measured at packet reception, DL, mean"
 attr unit dB
@@ -3100,7 +3100,7 @@ par MECHOSTDYN_test1.car.mobility initialMovementElevation 0deg
 attr unit deg
 par MECHOSTDYN_test1.car.app[0] typename "\"simulation_examples.app.registrationvim.RegistrationVim\""
 par MECHOSTDYN_test1.car.app[0] localPort 3333
-par MECHOSTDYN_test1.car.app[0] destPort 3333
+par MECHOSTDYN_test1.car.app[0] destPort 3334
 par MECHOSTDYN_test1.car.app[0] destAddress "\"mechost\""
 par MECHOSTDYN_test1.car.app[0] localAddress "\"car\""
 par MECHOSTDYN_test1.car.udp typename "\"inet.transportlayer.udp.Udp\""
@@ -3121,7 +3121,7 @@ scalar MECHOSTDYN_test1.car.udp packetSent:count 1
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, count"
-scalar MECHOSTDYN_test1.car.udp packetSent:sum(packetBytes) 208
+scalar MECHOSTDYN_test1.car.udp packetSent:sum(packetBytes) 2008
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, sum(packetBytes)"
@@ -3363,10 +3363,10 @@ par MECHOSTDYN_test1.car.cellularNic.pdcpRrc interactiveRlc 1
 attr enum TM,UM,AM,UNKNOWN_RLC_TYPE
 par MECHOSTDYN_test1.car.cellularNic.pdcpRrc backgroundRlc 1
 attr enum TM,UM,AM,UNKNOWN_RLC_TYPE
-scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc sentPacketToLowerLayer:count 1
+scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc sentPacketToLowerLayer:count 2
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc sentPacketToLowerLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc sentPacketToLowerLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source sentPacketToLowerLayer
 scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc sentPacketToUpperLayer:count 0
@@ -3381,10 +3381,10 @@ attr source receivedPacketFromLowerLayer
 scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc receivedPacketFromLowerLayer:sum(packetBytes) 0
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc receivedPacketFromUpperLayer:count 1
+scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc receivedPacketFromUpperLayer:count 2
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
-scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc receivedPacketFromUpperLayer:sum(packetBytes) 228
+scalar MECHOSTDYN_test1.car.cellularNic.pdcpRrc receivedPacketFromUpperLayer:sum(packetBytes) 2048
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
 par MECHOSTDYN_test1.car.cellularNic.rlc.tm typename "\"simu5g.stack.rlc.LteRlcTm\""
@@ -4045,7 +4045,7 @@ scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um rlcPacketLossTotal:mean 0
 attr source rlcPacketLossTotal
 attr title "rlc Packet Loss, mean"
 attr unit ""
-scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um rlcThroughputUl:mean 224.50980392157
+scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um rlcThroughputUl:mean 1740.6862745098
 attr source rlcThroughputUl
 attr title "Throughput at the rlc layer UL, mean"
 attr unit Bps
@@ -4080,7 +4080,7 @@ attr unit ""
 scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um sentPacketToLowerLayer:count 2
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um sentPacketToLowerLayer:sum(packetBytes) 233
+scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um sentPacketToLowerLayer:sum(packetBytes) 2054
 attr interpolationmode none
 attr source sentPacketToLowerLayer
 scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um sentPacketToUpperLayer:count 0
@@ -4095,10 +4095,10 @@ attr source receivedPacketFromLowerLayer
 scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um receivedPacketFromLowerLayer:sum(packetBytes) 0
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um receivedPacketFromUpperLayer:count 1
+scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um receivedPacketFromUpperLayer:count 2
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
-scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um receivedPacketFromUpperLayer:sum(packetBytes) 229
+scalar MECHOSTDYN_test1.car.cellularNic.nrRlc.um receivedPacketFromUpperLayer:sum(packetBytes) 2050
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
 par MECHOSTDYN_test1.car.cellularNic.nrRlc.am typename "\"simu5g.stack.rlc.LteRlcAm\""
@@ -4313,7 +4313,7 @@ scalar MECHOSTDYN_test1.car.cellularNic.nrMac macCellThroughputUl:mean -nan
 attr source macCellThroughputUl
 attr title "Cell Throughput at the MAC layer UL, mean"
 attr unit Bps
-scalar MECHOSTDYN_test1.car.cellularNic.nrMac macThroughputUl:mean 186.11694677871
+scalar MECHOSTDYN_test1.car.cellularNic.nrMac macThroughputUl:mean 1078.7640056022
 attr source macThroughputUl
 attr title "Throughput at the MAC layer UL, mean"
 attr unit Bps
@@ -4332,7 +4332,7 @@ attr unit s
 scalar MECHOSTDYN_test1.car.cellularNic.nrMac sentPacketToLowerLayer:count 4
 attr interpolationmode none
 attr source sentPacketToLowerLayer
-scalar MECHOSTDYN_test1.car.cellularNic.nrMac sentPacketToLowerLayer:sum(packetBytes) 334
+scalar MECHOSTDYN_test1.car.cellularNic.nrMac sentPacketToLowerLayer:sum(packetBytes) 3976
 attr interpolationmode none
 attr source sentPacketToLowerLayer
 scalar MECHOSTDYN_test1.car.cellularNic.nrMac sentPacketToUpperLayer:count 2
@@ -4347,10 +4347,10 @@ attr source receivedPacketFromLowerLayer
 scalar MECHOSTDYN_test1.car.cellularNic.nrMac receivedPacketFromLowerLayer:sum(packetBytes) 7
 attr interpolationmode none
 attr source receivedPacketFromLowerLayer
-scalar MECHOSTDYN_test1.car.cellularNic.nrMac receivedPacketFromUpperLayer:count 3
+scalar MECHOSTDYN_test1.car.cellularNic.nrMac receivedPacketFromUpperLayer:count 4
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
-scalar MECHOSTDYN_test1.car.cellularNic.nrMac receivedPacketFromUpperLayer:sum(packetBytes) 464
+scalar MECHOSTDYN_test1.car.cellularNic.nrMac receivedPacketFromUpperLayer:sum(packetBytes) 4108
 attr interpolationmode none
 attr source receivedPacketFromUpperLayer
 par MECHOSTDYN_test1.car.cellularNic.nrPhy typename "\"simu5g.stack.phy.NRPhyUe\""
@@ -4437,15 +4437,15 @@ scalar MECHOSTDYN_test1.car.cellularNic.nrChannelModel[0] distance:mean 248.0503
 attr source distance
 attr title "distance between UE and serving base station, mean"
 attr unit meters
-scalar MECHOSTDYN_test1.car.cellularNic.nrChannelModel[0] measuredSinrUl:mean 33.215187227119
+scalar MECHOSTDYN_test1.car.cellularNic.nrChannelModel[0] measuredSinrUl:mean 31.38256934952
 attr source measuredSinrUl
 attr title "SINR measured at feedback computation, UL, mean"
 attr unit dB
-scalar MECHOSTDYN_test1.car.cellularNic.nrChannelModel[0] measuredSinrDl:mean 41.553211142619
+scalar MECHOSTDYN_test1.car.cellularNic.nrChannelModel[0] measuredSinrDl:mean 39.831553597095
 attr source measuredSinrDl
 attr title "SINR measured at feedback computation, DL, mean"
 attr unit dB
-scalar MECHOSTDYN_test1.car.cellularNic.nrChannelModel[0] rcvdSinrUl:mean 21.146653467799
+scalar MECHOSTDYN_test1.car.cellularNic.nrChannelModel[0] rcvdSinrUl:mean 20.285596440673
 attr source rcvdSinrUl
 attr title "SINR measured at packet reception, UL, mean"
 attr unit dB

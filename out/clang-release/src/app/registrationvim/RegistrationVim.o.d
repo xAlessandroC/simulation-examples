@@ -106,7 +106,8 @@
   ../../inet4.3/src/inet/common/packet/dissector/ProtocolDissector.h \
   ../../inet4.3/src/inet/common/packet/dissector/ProtocolDissectorRegistry.h \
   ../../inet4.3/src/inet/common/packet/printer/ProtocolPrinter.h \
-  ../../inet4.3/src/inet/physicallayer/common/Signal.h
+  ../../inet4.3/src/inet/physicallayer/common/Signal.h \
+  ../../Simu5G/src/nodes/mec/MECOrchestrator/MECOMessages/MECOrchestratorMessages_m.h
 
 app/registrationvim/RegistrationVim.h:
 
@@ -323,3 +324,5 @@ msg/RegistrationPacket_m.h:
 ../../inet4.3/src/inet/common/packet/printer/ProtocolPrinter.h:
 
 ../../inet4.3/src/inet/physicallayer/common/Signal.h:
+
+../../Simu5G/src/nodes/mec/MECOrchestrator/MECOMessages/MECOrchestratorMessages_m.h:

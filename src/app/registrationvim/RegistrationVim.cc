@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "RegistrationVim.h"
+#include "nodes/mec/MECOrchestrator/MECOMessages/MECOrchestratorMessages_m.h"
 
 Define_Module(RegistrationVim);
 
@@ -68,6 +69,17 @@ void RegistrationVim::initSocket()
 
     delete initSocket_;
 
+//    inet::Packet* packet = createRegistrationPacket();
+    inet::Packet* packet = createInstantiationPacket();
+    socket.sendTo(packet, destAddress, destPort);
+
+    getParentModule()->bubble("Registrazione inviata...");
+}
+
+inet::Packet* RegistrationVim::createRegistrationPacket()
+{
+    EV << "RegistrationVim::createRegistrationPacket" << endl;
+
     inet::Packet* packet = new inet::Packet("Register");
     auto registrationpck = inet::makeShared<RegistrationPacket>();
     registrationpck->setRam(7777);
@@ -76,11 +88,33 @@ void RegistrationVim::initSocket()
     registrationpck->setAddress(localAddress);
     registrationpck->setChunkLength(inet::B(200));
     packet->insertAtBack(registrationpck);
-    socket.sendTo(packet, destAddress, destPort);
 
-    getParentModule()->bubble("Registrazione inviata...");
+    return packet;
 }
 
+inet::Packet* RegistrationVim::createInstantiationPacket()
+{
+    EV << "RegistrationVim::createInstantiationPacket" << endl;
+
+    inet::Packet* packet = new inet::Packet("Instantiation");
+    auto registrationpck = inet::makeShared<CreateAppMessage>();
+
+    registrationpck->setUeAppID(233);
+    registrationpck->setMEModuleName("MEModuleName");
+    registrationpck->setMEModuleType("MEModuleType");
+
+    registrationpck->setRequiredCpu(1000);
+    registrationpck->setRequiredRam(1000);
+    registrationpck->setRequiredDisk(1000);
+
+    registrationpck->setRequiredService("NULL");
+    registrationpck->setContextId(22);
+
+    registrationpck->setChunkLength(inet::B(2000));
+    packet->insertAtBack(registrationpck);
+
+    return packet;
+}
 
 
 
