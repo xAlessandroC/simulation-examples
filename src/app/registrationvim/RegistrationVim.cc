@@ -69,8 +69,8 @@ void RegistrationVim::initSocket()
 
     delete initSocket_;
 
-//    inet::Packet* packet = createRegistrationPacket();
-    inet::Packet* packet = createInstantiationPacket();
+    inet::Packet* packet = createRegistrationPacket();
+//    inet::Packet* packet = createInstantiationPacket();
     socket.sendTo(packet, destAddress, destPort);
 
     getParentModule()->bubble("Registrazione inviata...");
