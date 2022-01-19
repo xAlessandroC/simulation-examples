@@ -1,7 +1,0 @@
-+R #0  0s  MECHOSTDYN_test1.gNodeB1  10.0.0.13  10.0.0.0/29  <unspec>  wlan
-+R #0  0s  MECHOSTDYN_test1.gNodeB1  10.0.0.13  10.0.0.8/30  <unspec>  pppIf
-+R #0  0s  MECHOSTDYN_test1.gNodeB1  10.0.0.13  10.0.0.12/30  <unspec>  pppMEHostIf
-+R #0  0s  MECHOSTDYN_test1.mechost  10.0.0.2  127.0.0.0/8  <unspec>  lo0
-+R #0  0s  MECHOSTDYN_test1.mechost  10.0.0.2  10.0.0.0/29  <unspec>  wlan
-+R #0  0s  MECHOSTDYN_test1.car  10.0.0.3  127.0.0.0/8  <unspec>  lo0
-+R #0  0s  MECHOSTDYN_test1.car  10.0.0.3  10.0.0.0/29  <unspec>  wlan
