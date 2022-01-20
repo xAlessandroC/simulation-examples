@@ -25,6 +25,7 @@ import simu5g.common.binder.Binder;
 import simu5g.common.carrierAggregation.CarrierAggregation;
 import simu5g.nodes.NR.gNodeB;
 import simu5g.nodes.NR.NRUe;
+import simu5g.nodes.cars.MecCar;
 import inet.node.ethernet.Eth10G;
 import simu5g.nodes.Upf;
 
@@ -58,10 +59,13 @@ network MECHOSTDYN_test1
         mechost: MECHostDyn {
             @display("p=301,118");
         }
-        car: NRUe {
-            @display("p=56,363");
+        car: MecCar {
+            @display("p=56,363;is=vs");
         }
-        
+        fakeclient: MecCar {
+            @display("p=301,41;is=vs");
+        }
+
     connections allowunconnected:
 
 }
