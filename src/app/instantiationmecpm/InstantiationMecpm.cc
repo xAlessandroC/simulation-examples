@@ -79,20 +79,21 @@ void InstantiationMecpm::initSocket()
 inet::Packet* InstantiationMecpm::createInstantiationPacket()
 {
     EV << "InstantiationMecpm::createInstantiationPacket" << endl;
+//    (CreateAppMessage) sno = 0, timestamp = 0s, type = , sourceAddress = , sourcePort = 0, destinationAddress = , destinationPort = 0, destinationMecAppAddress = , destinationMecAppPort = 0, MEModuleType = simu5g.apps.mec.WarningAlert.MECWarningAlertApp, MEModuleName = MECWarningAlertApp, contextId = 0, ueAppID = 192, requiredDisk = 10000000, requiredRam = 10000000, requiredCpu = 1500, requiredService = MEWarningAlertService, providedService =
 
     inet::Packet* packet = new inet::Packet("Instantiation");
     auto registrationpck = inet::makeShared<CreateAppMessage>();
 
-    registrationpck->setUeAppID(233);
-    registrationpck->setMEModuleName("MEModuleName");
-    registrationpck->setMEModuleType("MEModuleType");
+    registrationpck->setUeAppID(192);
+    registrationpck->setMEModuleName("MECWarningAlertApp");
+    registrationpck->setMEModuleType("simu5g.apps.mec.WarningAlert.MECWarningAlertApp");
 
     registrationpck->setRequiredCpu(1000);
     registrationpck->setRequiredRam(1000);
     registrationpck->setRequiredDisk(1000);
 
-    registrationpck->setRequiredService("NULL");
-    registrationpck->setContextId(22);
+    registrationpck->setRequiredService("MEWarningAlertService");
+    registrationpck->setContextId(0);
 
     registrationpck->setChunkLength(inet::B(2000));
     packet->insertAtBack(registrationpck);
