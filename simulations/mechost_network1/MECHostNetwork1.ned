@@ -28,6 +28,7 @@ import simu5g.nodes.backgroundCell.BackgroundCell;
 import simu5g.world.radio.LteChannelControl;
 import simu5g.common.binder.Binder;
 import simu5g.common.carrierAggregation.CarrierAggregation;
+import simu5g.nodes.cars.MecCar;
 
 //
 // TODO auto-generated type
@@ -65,9 +66,10 @@ network MECHostNetwork1
         gnb: gNodeB {
             @display("p=648,251;is=vl");
         }
-        ue: NRUe {
+        ue: MecCar {
             @display("p=648,367");
         }
+        
     connections:
         server.pppg++ <--> Eth10G <--> router.pppg++;
         router.pppg++ <--> Eth10G <--> upf.filterGate;
