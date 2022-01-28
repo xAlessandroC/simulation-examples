@@ -35,6 +35,8 @@ import simu5g.nodes.cars.MecCar;
 //
 network MECHostNetwork1
 {
+    parameters:
+        int numCars = default(1);
     submodules:
         channelControl: LteChannelControl {
             @display("p=50,25;is=s");
@@ -66,7 +68,7 @@ network MECHostNetwork1
         gnb: gNodeB {
             @display("p=648,251;is=vl");
         }
-        ue: MecCar {
+        ue[numCars]: MecCar {
             @display("p=648,367");
         }
         
