@@ -50,6 +50,9 @@ void InstantiationMecpm::handleMessage(cMessage *msg)
         if (!strcmp(msg->getName(), "InitSocket")){
             initSocket();
         }
+        else if (!strcmp(msg->getName(), "TerminateApp")){
+            sendTermination();
+        }
     }else{
         EV << "InstantiationMecpm::handleMessage - other message received!" << endl;
     }
@@ -65,14 +68,29 @@ void InstantiationMecpm::initSocket()
     if (destModule == nullptr)
         throw cRuntimeError("InstantiationMecpm::initSocket - \tFATAL! Cannot find destAddress!");
 
-    std::cout << destModule << endl;
+//    std::cout << destModule << endl;
 
     delete initSocket_;
 
     inet::Packet* packet = createInstantiationPacket();
     socket.sendTo(packet, destAddress, destPort);
 
-    getParentModule()->bubble("Registrazione inviata...");
+    getParentModule()->bubble("Instanziazione inviata...");
+
+    terminateApp_ = new cMessage("TerminateApp");
+    scheduleAt(simTime()+1.0, terminateApp_);
+}
+
+void InstantiationMecpm::sendTermination()
+{
+    EV << "InstantiationMecpm::sendTermination" << endl;
+
+    delete terminateApp_;
+
+    inet::Packet* packet = createTerminationPacket();
+    socket.sendTo(packet, destAddress, destPort);
+
+    getParentModule()->bubble("Terminazione inviata...");
 }
 
 
@@ -97,6 +115,20 @@ inet::Packet* InstantiationMecpm::createInstantiationPacket()
 
     registrationpck->setChunkLength(inet::B(2000));
     packet->insertAtBack(registrationpck);
+
+    return packet;
+}
+
+inet::Packet* InstantiationMecpm::createTerminationPacket()
+{
+    EV << "InstantiationMecpm::createTerminationPacket" << endl;
+
+    inet::Packet* packet = new inet::Packet("Termination");
+    auto terminationpck = inet::makeShared<DeleteAppMessage>();
+
+    terminationpck->setUeAppID(192);
+    terminationpck->setChunkLength(inet::B(100));
+    packet->insertAtBack(terminationpck);
 
     return packet;
 }

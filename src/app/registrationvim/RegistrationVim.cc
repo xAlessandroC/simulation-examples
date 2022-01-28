@@ -65,7 +65,7 @@ void RegistrationVim::initSocket()
     if (destModule == nullptr)
         throw cRuntimeError("RegistrationVim::initSocket - \tFATAL! Cannot find destAddress!");
 
-    std::cout << destModule << endl;
+//    std::cout << destModule << endl;
 
     delete initSocket_;
 
@@ -85,6 +85,7 @@ inet::Packet* RegistrationVim::createRegistrationPacket()
     registrationpck->setRam(7777);
     registrationpck->setDisk(7777);
     registrationpck->setCpu(7777);
+    registrationpck->setPort(2222);
     registrationpck->setAddress(localAddress);
     registrationpck->setChunkLength(inet::B(200));
     packet->insertAtBack(registrationpck);

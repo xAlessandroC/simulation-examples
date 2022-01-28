@@ -23,4 +23,5 @@ class RegistrationPacket extends inet::FieldsChunk {
     double disk;
     
     inet::L3Address address;
+    int port;
 }

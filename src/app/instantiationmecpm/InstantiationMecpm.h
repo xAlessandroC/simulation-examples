@@ -34,6 +34,7 @@ class InstantiationMecpm : public cSimpleModule
 
     //Messages
     omnetpp::cMessage *initSocket_;
+    omnetpp::cMessage *terminateApp_;
 
     private:
         void initSocket();
@@ -49,9 +50,13 @@ class InstantiationMecpm : public cSimpleModule
 
         virtual void handleMessage(cMessage *msg);
 
+        void sendTermination();
+
     private:
 
         inet::Packet* createInstantiationPacket();
+
+        inet::Packet* createTerminationPacket();
 
 };
 
