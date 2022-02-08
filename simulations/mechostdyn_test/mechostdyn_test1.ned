@@ -22,10 +22,12 @@ import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.networklayer.ipv4.RoutingTableRecorder;
 import simu5g.world.radio.LteChannelControl;
 import simu5g.common.binder.Binder;
+import inet.node.inet.Router;
 import simu5g.common.carrierAggregation.CarrierAggregation;
 import simu5g.nodes.NR.gNodeB;
 import simu5g.nodes.NR.NRUe;
 import simu5g.nodes.cars.MecCar;
+import inet.node.inet.StandardHost;
 import inet.node.ethernet.Eth10G;
 import simu5g.nodes.Upf;
 
@@ -53,19 +55,35 @@ network MECHOSTDYN_test1
         }
 
         gNodeB1: gNodeB {
-            @display("p=156,136;is=vl");
+            @display("p=72,256;is=vl");
         }
 
         mechost: MECHostDyn {
-            @display("p=301,118");
+            @display("p=407,118");
+        }
+        router: Router {
+            @display("p=289,117;i=device/smallrouter");
+        }
+        upf: Upf {
+            @display("p=180,118");
+        }
+        iUpf: Upf {
+            @display("p=72,118");
+        }
+        server: StandardHost {
+            @display("p=289,33;is=n;i=device/server");
         }
         car: MecCar {
             @display("p=56,363;is=vs");
         }
         fakeclient: MecCar {
-            @display("p=301,41;is=vs");
+            @display("p=207,245;is=vs");
         }
 
     connections allowunconnected:
-
+		mechost.ethserver <--> Eth10G <--> router.ethg++;
+        server.pppg++ <--> Eth10G <--> router.pppg++;
+        router.pppg++ <--> Eth10G <--> upf.filterGate;
+        upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
+        iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
 }
