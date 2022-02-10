@@ -78,7 +78,7 @@ void InstantiationMecpm::initSocket()
     getParentModule()->bubble("Instanziazione inviata...");
 
     terminateApp_ = new cMessage("TerminateApp");
-    scheduleAt(simTime()+1.0, terminateApp_);
+    scheduleAt(simTime()+1.5, terminateApp_);
 }
 
 void InstantiationMecpm::sendTermination()
