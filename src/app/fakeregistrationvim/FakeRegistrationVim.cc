@@ -43,7 +43,7 @@ void FakeRegistrationVim::handleMessage(cMessage *msg)
     {
         EV << "FakeRegistrationVim::handleMessage - self message received!" << endl;
         VirtualisationInfrastructureManagerDyn* vimAppClass = check_and_cast<VirtualisationInfrastructureManagerDyn*>(vimApp);
-        std::string host_id = vimAppClass->registerHost(1111, 1111, 1111, inet::L3Address("192.168.1.1"));
+        int host_id = vimAppClass->registerHost(3456, 1111, 1111, 1111, inet::L3Address("192.168.1.1"), 6789);
     }else{
         EV << "FakeRegistrationVim::handleMessage - other message received!" << endl;
     }
