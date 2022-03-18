@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package simulation_examples.simulations.mechostdyn_test;
+package simulation_examples.simulations.MecPlatform_simulationtest;
 
 import simu5g.nodes.mec.VirtualisationInfrastructureManager.Dynamic.VirtualisationInfrastructureManagerHost;
 import simu5g.nodes.mec.VirtualisationInfrastructureManager.Dynamic.VirtualisationInfrastructureManagerDyn;
@@ -32,10 +32,7 @@ import inet.node.ethernet.Eth10G;
 import simu5g.nodes.Upf;
 
 
-//
-// TODO auto-generated type
-//
-network MECHOSTDYN_test1
+network MecPlatformSimulationNetwork
 {
     submodules:
         routingRecorder: RoutingTableRecorder {
@@ -53,14 +50,16 @@ network MECHOSTDYN_test1
         carrierAggregation: CarrierAggregation {
             @display("p=691.38,342.24;is=s");
         }
-
+        
+        
         gNodeB1: gNodeB {
             @display("p=72,256;is=vl");
         }
-
+        
         mechost: MECHostDyn {
             @display("p=407,118");
         }
+        
         router: Router {
             @display("p=289,117;i=device/smallrouter");
         }
@@ -73,18 +72,9 @@ network MECHOSTDYN_test1
         server: StandardHost {
             @display("p=289,33;is=n;i=device/server");
         }
-        car: MecCar {
-            @display("p=56,363;is=vs");
-        }
-        fakeclient: MecCar {
-            @display("p=207,245;is=vs");
-        }
-        fakeclient2: MecCar {
-            @display("p=542,130;is=vs");
-        }
-
-    connections allowunconnected:
-        mechost.ethserver <--> Eth10G <--> router.ethg++;
+        
+	connections allowunconnected:
+	    mechost.ethserver <--> Eth10G <--> router.ethg++;
         server.pppg++ <--> Eth10G <--> router.pppg++;
         router.pppg++ <--> Eth10G <--> upf.filterGate;
         upf.pppg++ <--> Eth10G <--> iUpf.pppg++;

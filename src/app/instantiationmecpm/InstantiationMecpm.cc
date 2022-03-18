@@ -29,6 +29,14 @@ void InstantiationMecpm::initialize(int stage)
 
     localAddress = inet::L3AddressResolver().resolve(par("localAddress"));
 
+    termination = par("terminate");
+    termination_delay = par("term_delay");
+    start_delay = par("start_delay");
+
+    appID = par("appID").intValue();
+    contextID = par("contextID").intValue();
+
+
     // Set up socket for communcation
     int port = par("localPort");
     if (port != -1)
@@ -39,7 +47,7 @@ void InstantiationMecpm::initialize(int stage)
     EV << simTime() << "InstantiationMecpm::initialize - binding to port: local:" << localPort << " , dest: " << destAddress.str() << ":" << destPort << endl;
 
     initSocket_ = new cMessage("InitSocket");
-    scheduleAt(simTime()+1.5, initSocket_);
+    scheduleAt(simTime()+start_delay, initSocket_);
 }
 
 void InstantiationMecpm::handleMessage(cMessage *msg)
@@ -77,8 +85,11 @@ void InstantiationMecpm::initSocket()
 
     getParentModule()->bubble("Instanziazione inviata...");
 
-    terminateApp_ = new cMessage("TerminateApp");
-    scheduleAt(simTime()+1.5, terminateApp_);
+
+    if(termination){
+        terminateApp_ = new cMessage("TerminateApp");
+        scheduleAt(simTime()+termination_delay, terminateApp_);
+    }
 }
 
 void InstantiationMecpm::sendTermination()
@@ -102,7 +113,7 @@ inet::Packet* InstantiationMecpm::createInstantiationPacket()
     inet::Packet* packet = new inet::Packet("Instantiation");
     auto registrationpck = inet::makeShared<CreateAppMessage>();
 
-    registrationpck->setUeAppID(192);
+    registrationpck->setUeAppID(appID);
     registrationpck->setMEModuleName("MECWarningAlertApp");
     registrationpck->setMEModuleType("simu5g.apps.mec.WarningAlert.MECWarningAlertApp");
 
@@ -111,7 +122,7 @@ inet::Packet* InstantiationMecpm::createInstantiationPacket()
     registrationpck->setRequiredDisk(1000);
 
     registrationpck->setRequiredService("MEWarningAlertService");
-    registrationpck->setContextId(0);
+    registrationpck->setContextId(contextID);
 
     registrationpck->setChunkLength(inet::B(2000));
     packet->insertAtBack(registrationpck);
@@ -126,7 +137,7 @@ inet::Packet* InstantiationMecpm::createTerminationPacket()
     inet::Packet* packet = new inet::Packet("Termination");
     auto terminationpck = inet::makeShared<DeleteAppMessage>();
 
-    terminationpck->setUeAppID(192);
+    terminationpck->setUeAppID(appID);
     terminationpck->setChunkLength(inet::B(100));
     packet->insertAtBack(terminationpck);
 

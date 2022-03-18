@@ -32,6 +32,13 @@ class InstantiationMecpm : public cSimpleModule
     inet::L3Address destAddress;
     inet::L3Address localAddress;
 
+    bool termination;
+    double termination_delay;
+    double start_delay;
+
+    int appID;
+    int contextID;
+
     //Messages
     omnetpp::cMessage *initSocket_;
     omnetpp::cMessage *terminateApp_;

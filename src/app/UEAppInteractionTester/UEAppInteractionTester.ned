@@ -13,14 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package simulation_examples.app.instantiationmecpm;
+package simulation_examples.app.UEAppInteractionTester;
 
 import inet.applications.contract.IApp;
 
 //
 // TODO auto-generated type
 //
-simple InstantiationMecpm like IApp
+simple UEAppInteractionTester like IApp
 {
     parameters:
     	@display("i=block/control");
@@ -28,15 +28,14 @@ simple InstantiationMecpm like IApp
     	string localAddress;
     	int localPort;
     	
-    	string destAddress;
-    	int destPort;
+    	string targetMecAppAddress;
+    	int targetMecAppPort;
     	
-    	bool terminate = default(true);
-    	double term_delay = default(1.5);
-    	double start_delay = default(1.5);
+    	double startDelay = default(2.0);
+    	double positionX;
+    	double positionY;
+    	double radius;
     	
-    	int appID;
-    	int contextID;
     	
    	gates:
         output socketOut;
