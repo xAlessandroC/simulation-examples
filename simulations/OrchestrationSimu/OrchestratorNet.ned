@@ -36,10 +36,18 @@ network OrchestratorNet
             @display("p=36,282;is=n;i=device/server");
         }
         vim: StandardHost {
-            @display("p=212,68;is=n;i=device/server");
+            @display("p=268,82;is=n;i=device/server");
         }
+        vim1: StandardHost {
+            @display("p=324,163;is=n;i=device/server");
+        }
+//        vim2: StandardHost {
+//            @display("p=324,282;is=n;i=device/server");
+//        }
     connections:
-        meo.ethg++ <--> Eth10G <--> router.ethg ++;
-        vim.ethg++ <--> Eth10G <--> router.ethg ++;
+        meo.ethg++ <--> Eth10G <--> router.ethg++;
+        vim.ethg++ <--> Eth10G <--> router.ethg++;
+        vim1.ethg++ <--> Eth10G <--> router.ethg++;
+//        vim2.ethg++ <--> Eth10G <--> router.ethg++;
 
 }

@@ -14,6 +14,7 @@
 // 
 
 #include "MEOTester.h"
+#include "nodes/mec/MECOrchestrator/MECOMessages/MECOrchestratorMessages_m.h" // TODO add this messages to our message
 
 Define_Module(MEOTester);
 
@@ -60,6 +61,87 @@ void MEOTester::handleMessage(cMessage *msg)
     {
         EV << "MEOTester::Sending Message" << endl;
         sendMessage();
+    }
+    else
+    {
+        inet::Packet* packet = check_and_cast<inet::Packet *>(msg);
+        EV << "MEOTester::Received another message " << msg->getName() << endl;
+        if(mm == MM3 && std::strcmp(packet->getName(), "ServiceRequest") == 0)
+        {
+            // MECPlatformManager
+            auto data = packet->peekData<MeoMepmRequest>();
+            EV << "MEOTester::MEPM data: " << endl;
+            const MeoMepmRequest* receivedData = data.get();
+            for(int i = 0; i < receivedData->getRequiredServiceNamesArraySize(); i++)
+            {
+                EV << "MEOTester::RequiredServiceName: " << receivedData->getRequiredServiceNames(i);
+            }
+
+            // Send back a response with yes!
+            inet::Packet* packet = new inet::Packet("AvailabilityResponseMepm");
+            auto responsePkt = inet::makeShared<MecHostResponse>();
+            responsePkt->setDeviceAppId(receivedData->getDeviceAppId());
+            responsePkt->setMecHostId(getParentModule()->getId());
+            responsePkt->setResult(true);
+            responsePkt->setChunkLength(inet::B(2000));
+            packet->insertAtBack(responsePkt);
+            udpSocket.send(packet);
+
+
+        }
+        else if(mm == MM3 && std::strcmp(packet->getName(), "instantiationApplicationRequest") == 0)
+        {
+            // Create an appInfo packet to send back
+            // I have created the infrastructure Instantiation response that should be used
+            EV << "MEOTester::MEPM received instantiation Application Request from orchestrator " << endl;
+            auto data = packet->peekData<CreateAppMessage>();
+            const CreateAppMessage *createMsg = data.get();
+
+            EV << "MEPM::UEAppId: " << createMsg->getUeAppID() << endl;
+            EV << "MEPM::MEModulename: " << createMsg->getMEModuleName() << endl;
+            EV << "MEPM::MEModuleType: " << createMsg->getMEModuleType() << endl;
+            EV << "MEPM::Required cpu: " << createMsg->getRequiredCpu() << ", ram: " << createMsg->getRequiredRam() << ", disk: " << createMsg->getRequiredDisk() << endl;
+
+            // Replying back
+            inet::Packet* toSend = new inet::Packet("instantiationApplicationResponse");
+            auto responsePkt = inet::makeShared<InstantiationApplicationResponse>();
+            responsePkt->setStatus(true);
+            responsePkt->setMecHostId(getParentModule()->getId());
+            responsePkt->setAppName(createMsg->getMEModuleName()); // send back module name to avoid findingLoop
+            responsePkt->setDeviceAppId(std::to_string(createMsg->getUeAppID()).c_str());
+            std::stringstream appName;
+            appName << createMsg->getMEModuleName() << "[" <<  createMsg->getContextId() << "]";
+            responsePkt->setInstanceId(appName.str().c_str());
+            inet::L3Address localIpAddress = inet::L3AddressResolver().resolve(localAddress);
+            responsePkt->setMecAppRemoteAddress(localIpAddress);
+            responsePkt->setMecAppRemotePort(3456); // to change
+            EV << "Context id: " << createMsg->getContextId() << endl;
+            responsePkt->setContextId(createMsg->getContextId());
+            responsePkt->setChunkLength(inet::B(1000));
+            toSend->insertAtBack(responsePkt);
+            udpSocket.send(toSend);
+
+
+
+
+        }
+        else
+        {
+            // VirtualisationInfrastructureManager
+            auto data = packet->peekData<MeoVimRequest>();
+            const MeoVimRequest *receivedData = data.get();
+
+            EV << "MEOTester::VIM Data: cpu: " << receivedData->getCpu() << ", disk: " << receivedData->getDisk() << ", ram: " << receivedData->getRam() << endl;
+            // Send back a response with yes!
+            inet::Packet* packet = new inet::Packet("AvailabilityResponseVim");
+            auto responsePkt = inet::makeShared<MecHostResponse>();
+            responsePkt->setDeviceAppId(receivedData->getDeviceAppId());
+            responsePkt->setMecHostId(this->getParentModule()->getId());
+            responsePkt->setResult(true);
+            responsePkt->setChunkLength(inet::B(2000));
+            packet->insertAtBack(responsePkt);
+            udpSocket.send(packet);
+        }
     }
 
     delete msg;
