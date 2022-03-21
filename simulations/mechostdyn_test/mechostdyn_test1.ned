@@ -76,6 +76,9 @@ network MECHOSTDYN_test1
         car: MecCar {
             @display("p=56,363;is=vs");
         }
+        car2: MecCar {
+            @display("p=407,363;is=vs");
+        }
         fakeclient: MecCar {
             @display("p=207,245;is=vs");
         }
