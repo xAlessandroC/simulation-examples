@@ -156,7 +156,7 @@ void MEOTester::sendMessage()
     EV << "mm: " << mm << endl;
     registrationPkt->setHostId(getParentModule()->getId());
     inet::L3Address myAddress = inet::L3AddressResolver().resolve(localAddress);
-    registrationPkt->setSourceAddress(myAddress);
+//    registrationPkt->setSourceAddress(myAddress);
     registrationPkt->setType(mm);
     registrationPkt->setSourcePort(localPort);
     registrationPkt->setChunkLength(inet::B(2000));

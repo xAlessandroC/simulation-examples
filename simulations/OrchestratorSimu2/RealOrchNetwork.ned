@@ -29,6 +29,7 @@ import simu5g.common.carrierAggregation.CarrierAggregation;
 import simu5g.common.binder.Binder;
 import simu5g.nodes.mec.UALCMP.UALCMP;
 import simu5g.apps.mec.MEOApp.MecOrchestratorHost;
+import simu5g.nodes.mec.Dynamic.MECHostDyn;
 
 network RealOrchNetwork
 {
@@ -55,26 +56,26 @@ network RealOrchNetwork
             @display("p=352,139");
         }
         iUpf: Upf {
-            @display("p=352.92624,249.77875");
+            @display("p=352,212");
         }
         mecOrchestrator: MecOrchestratorHost {
             @display("p=248,52;is=n;i=device/server");
         }
-        mecHost1: StandardHost { // Testing device (not real MECHost)
-            @display("p=545,250;i=device/server");
+        mechost1: MECHostDyn { // Testing device (not real MECHost)
+            @display("p=139,212;i=device/server");
         }
-        mecHost2: StandardHost { // Testing device (not real MECHost)
-            @display("p=352,349;is=n;i=device/server");
-        }
+        //        mecHost2: StandardHost { // Testing device (not real MECHost)
+        //            @display("p=352,349;is=n;i=device/server");
+        //        }
         gNodeB1: gNodeB {
-            @display("p=140,250;is=vl");
+            @display("p=139,302;is=vl");
         }
         ue: NRUe {
             @display("p=237.64375,310.45377");
         }
-        ue2: NRUe {
-            @display("p=200,310");
-        }
+//        ue2: NRUe {
+//            @display("p=200,310");
+//        }
         ualcmp: UALCMP {
             @display("p=470,51;i=device/smallrouter");
         }
@@ -87,7 +88,9 @@ network RealOrchNetwork
         ualcmp.fromMecOrchestrator <-- mecOrchestrator.toUALCMP;
 
         upf.pppg++ <--> Eth10G <--> mecOrchestrator.ppp++;
-        mecHost1.pppg++ <--> Eth10G <--> iUpf.pppg++;
-        mecHost2.pppg++ <--> Eth10G <--> iUpf.pppg++;
+        mechost1.ppp1 <--> Eth10G <--> iUpf.pppg++;
+        mechost1.ppp2 <--> Eth10G <--> iUpf.pppg++;
+        //        mecHost2.pppg++ <--> Eth10G <--> iUpf.pppg++;
+        mechost1.pppENB++ <--> Eth10G <--> gNodeB1.pppMEHost;
 
 }
