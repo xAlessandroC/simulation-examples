@@ -88,8 +88,8 @@ network RealOrchNetwork
         ualcmp.fromMecOrchestrator <-- mecOrchestrator.toUALCMP;
 
         upf.pppg++ <--> Eth10G <--> mecOrchestrator.ppp++;
-        mechost1.ppp1 <--> Eth10G <--> iUpf.pppg++;
-        mechost1.ppp2 <--> Eth10G <--> iUpf.pppg++;
+        mechost1.pppVim <--> Eth10G <--> iUpf.pppg++;
+        mechost1.pppMepm <--> Eth10G <--> iUpf.pppg++;
         //        mecHost2.pppg++ <--> Eth10G <--> iUpf.pppg++;
         mechost1.pppENB++ <--> Eth10G <--> gNodeB1.pppMEHost;
 
