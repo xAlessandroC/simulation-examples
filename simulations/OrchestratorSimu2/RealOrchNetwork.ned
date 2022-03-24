@@ -104,7 +104,7 @@ network RealOrchNetwork
         ualcmp.toMecOrchestrator --> mecOrchestrator.fromUALCMP;
         ualcmp.fromMecOrchestrator <-- mecOrchestrator.toUALCMP;
 
-        upf.pppg++ <--> Eth10G <--> mecOrchestrator.ppp++;
+//        upf.pppg++ <--> Eth10G <--> mecOrchestrator.ppp++;
         mechost1.pppVim <--> Eth10G <--> iUpf.pppg++;
         mechost1.pppMepm <--> Eth10G <--> iUpf.pppg++;
         //        mecHost2.pppg++ <--> Eth10G <--> iUpf.pppg++;
@@ -115,6 +115,6 @@ network RealOrchNetwork
         router.pppg++ <--> Eth10G <--> upf.pppg++;
         router.pppg++ <--> Eth10G <--> upf.filterGate;
         ualcmp.ppp++ <--> Eth10G <--> router.pppg++;
-//        mecOrchestrator.ppp++ <--> Eth10G <--> router.pppg++;
+        mecOrchestrator.ppp++ <--> Eth10G <--> router.pppg++;
 
 }
