@@ -30,6 +30,8 @@ import simu5g.common.binder.Binder;
 import simu5g.nodes.mec.UALCMP.UALCMP;
 import simu5g.apps.mec.MEOApp.MecOrchestratorHost;
 import simu5g.nodes.mec.Dynamic.MECHostDyn;
+import inet.node.inet.Router;
+import simu5g.nodes.cars.MecCar;
 
 network RealOrchNetwork
 {
@@ -73,16 +75,31 @@ network RealOrchNetwork
         ue: NRUe {
             @display("p=237.64375,310.45377");
         }
-//        ue2: NRUe {
-//            @display("p=200,310");
-//        }
+        ue2: NRUe {
+            @display("p=237,394");
+        }
         ualcmp: UALCMP {
             @display("p=470,51;i=device/smallrouter");
+        }
+
+        router: Router {
+            @display("p=523,138");
+        }
+
+        server: StandardHost {
+            @display("p=690,139;is=n;i=device/server");
+        }
+
+        car: MecCar {
+            @display("p=77,193;is=vs");
+        }
+        car2: MecCar {
+            @display("p=77,260;is=vs");
         }
     connections allowunconnected:
         upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
         iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
-        ualcmp.ppp++ <--> Eth10G <--> upf.filterGate;
+//        ualcmp.ppp++ <--> Eth10G <--> upf.pppg++;
 
         ualcmp.toMecOrchestrator --> mecOrchestrator.fromUALCMP;
         ualcmp.fromMecOrchestrator <-- mecOrchestrator.toUALCMP;
@@ -92,5 +109,12 @@ network RealOrchNetwork
         mechost1.pppMepm <--> Eth10G <--> iUpf.pppg++;
         //        mecHost2.pppg++ <--> Eth10G <--> iUpf.pppg++;
         mechost1.pppENB++ <--> Eth10G <--> gNodeB1.pppMEHost;
+
+        // Server links
+        server.pppg++ <--> Eth10G <--> router.pppg++;
+        router.pppg++ <--> Eth10G <--> upf.pppg++;
+        router.pppg++ <--> Eth10G <--> upf.filterGate;
+        ualcmp.ppp++ <--> Eth10G <--> router.pppg++;
+//        mecOrchestrator.ppp++ <--> Eth10G <--> router.pppg++;
 
 }
