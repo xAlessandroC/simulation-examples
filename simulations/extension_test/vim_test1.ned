@@ -69,6 +69,7 @@ network VIM_test1
     connections allowunconnected:
 	
 		upf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
-		viManager.pppENB++ <--> Eth10G <--> upf.pppg++;
+		viManager.pppeENB <--> Eth10G <--> upf.pppg++;
+		//viManager.pppENB++ <--> Eth10G <--> upf.pppg++;
 //        viManager.pppENB++ <--> Eth10G <--> gNodeB1.pppMEHost;
 }
