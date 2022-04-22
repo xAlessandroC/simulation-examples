@@ -30,7 +30,7 @@ import simu5g.common.binder.Binder;
 import simu5g.nodes.mec.UALCMP.UALCMP;
 import simu5g.apps.mec.MEOApp.MecOrchestratorHost;
 import simu5g.nodes.mec.Dynamic.MECHostDyn;
-import simu5g.nodes.mec.Dynamic.MECHostDynNo5G;
+import simulation_examples.MECHostUPF.MECHostDynNo5G;
 import inet.node.inet.Router;
 import simu5g.nodes.cars.MecCar;
 
@@ -94,28 +94,27 @@ network MHUpfNetwork
         car: MecCar {
             @display("p=77,193;is=vs");
         }
-        car2: MecCar {
-            @display("p=77,260;is=vs");
-        }
+//        car2: MecCar {
+//            @display("p=77,260;is=vs");
+//        }
     connections allowunconnected:
         
         ualcmp.toMecOrchestrator --> mecOrchestrator.fromUALCMP;
         ualcmp.fromMecOrchestrator <-- mecOrchestrator.toUALCMP;
 
-        mechost1.pppENB++ <--> Eth10G <--> iUpf.pppg++;
-        mechost1.pppENB++ <--> Eth10G <--> gNodeB1.pppMEHost;
-
 		      
         // Server, UALCMP and MEO links
         server.pppg++ <--> Eth10G <--> router.pppg++;
         ualcmp.ppp++ <--> Eth10G <--> router.pppg++;
-        mecOrchestrator.ppp++ <--> Eth10G <--> router.pppg++;
+        mecOrchestrator.pppg++ <--> Eth10G <--> router.pppg++;
         
         // Core links
         upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
         iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
         router.pppg++ <--> Eth10G <--> upf.pppg++;
         router.pppg++ <--> Eth10G <--> upf.filterGate;
+        mechost1.pppENB++ <--> Eth10G <--> iUpf.pppg++;
+        mechost1.pppENB++ <--> Eth10G <--> gNodeB1.pppMEHost;
         
 
 }

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package simulation_examples.simulations.OrchestratorSimu2;
+package simulation_examples.simulations.FinalCompleteSimulation;
 
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.networklayer.ipv4.RoutingTableRecorder;
@@ -64,11 +64,8 @@ network RealOrchNetwork
             @display("p=431,52;is=n;i=device/server");
         }
         mechost1: MECHostDyn { // Testing device (not real MECHost)
-            @display("p=139,212;i=device/server");
+            @display("p=139,147;i=device/server");
         }
-        //        mecHost2: StandardHost { // Testing device (not real MECHost)
-        //            @display("p=352,349;is=n;i=device/server");
-        //        }
         gNodeB1: gNodeB {
             @display("p=139,302;is=vl");
         }
@@ -90,31 +87,28 @@ network RealOrchNetwork
             @display("p=690,139;is=n;i=device/server");
         }
 
-//        car: MecCar {
-//            @display("p=77,193;is=vs");
-//        }
-//        car2: MecCar {
-//            @display("p=77,260;is=vs");
-//        }
+        car: MecCar {
+            @display("p=77,193;is=vs");
+        }
+        car2: MecCar {
+            @display("p=77,260;is=vs");
+        }
     connections allowunconnected:
-        upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
-        iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
-//        ualcmp.ppp++ <--> Eth10G <--> upf.pppg++;
 
+		// other links
         ualcmp.toMecOrchestrator --> mecOrchestrator.fromUALCMP;
         ualcmp.fromMecOrchestrator <-- mecOrchestrator.toUALCMP;
 
-        //        upf.pppg++ <--> Eth10G <--> mecOrchestrator.ppp++;
-        mechost1.pppVim <--> Eth10G <--> iUpf.pppg++;
-        mechost1.pppMepm <--> Eth10G <--> iUpf.pppg++;
-        //        mecHost2.pppg++ <--> Eth10G <--> iUpf.pppg++;
-        mechost1.pppENB++ <--> Eth10G <--> gNodeB1.pppMEHost;
-
-        // Server links
+        // Core links
         server.pppg++ <--> Eth10G <--> router.pppg++;
         router.pppg++ <--> Eth10G <--> upf.pppg++;
         router.pppg++ <--> Eth10G <--> upf.filterGate;
         ualcmp.ppp++ <--> Eth10G <--> router.pppg++;
-        mecOrchestrator.ppp++ <--> Eth10G <--> router.pppg++;
+        mecOrchestrator.pppg++ <--> Eth10G <--> router.pppg++;
 
+        // Edge links
+        upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
+        iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
+        mechost1.ppp++ <--> Eth10G <--> iUpf.pppg++;
+        mechost1.ppp++ <--> Eth10G <--> gNodeB1.pppMEHost;
 }

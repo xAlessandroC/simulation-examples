@@ -74,7 +74,7 @@ network MecPlatformSimulationNetwork
         }
         
 	connections allowunconnected:
-	    mechost.ethserver <--> Eth10G <--> router.ethg++;
+	    //mechost.ethserver <--> Eth10G <--> router.ethg++;
         server.pppg++ <--> Eth10G <--> router.pppg++;
         router.pppg++ <--> Eth10G <--> upf.filterGate;
         upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
