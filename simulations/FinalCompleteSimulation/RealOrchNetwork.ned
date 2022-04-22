@@ -28,7 +28,7 @@ import simu5g.nodes.NR.NRUe;
 import simu5g.common.carrierAggregation.CarrierAggregation;
 import simu5g.common.binder.Binder;
 import simu5g.nodes.mec.UALCMP.UALCMP;
-import simu5g.apps.mec.MEOApp.MecOrchestratorHost;
+import simu5g.nodes.mec.Dynamic.MEO.MecOrchestratorHost;
 import simu5g.nodes.mec.Dynamic.MECHostDyn;
 import inet.node.inet.Router;
 import simu5g.nodes.cars.MecCar;

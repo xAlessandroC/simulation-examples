@@ -22,14 +22,14 @@
 #include "inet/transportlayer/contract/udp/UdpSocket.h"
 
 // Registration Message
-#include "apps/mec/MEOApp/Messages/RegistrationPkt_m.h"
+#include "nodes/mec/Dynamic/MEO/Messages/RegistrationPkt_m.h"
 
 //// mm4 messages
 //#include "apps/mec/MEOApp/Messages/MeoVimPackets_m.h"
 //
 //// mm3 messages
 //#include "apps/mec/MEOApp/Messages/MeoMepmPackets_m.h"
-#include "apps/mec/MEOApp/Messages/MeoPackets_m.h"
+#include "nodes/mec/Dynamic/MEO/Messages/MeoPackets_m.h"
 
 
 using namespace omnetpp;
