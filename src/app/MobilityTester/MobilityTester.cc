@@ -78,17 +78,26 @@ void MobilityTester::sendPostRequest()
     nlohmann::ordered_json request;
 
     request["appMobilityServiceId"] = "";
-    request["deviceInformation"]["associateId"]["type"] = "UE_IPV4_ADDRESS";
-    request["deviceInformation"]["associateId"]["value"] = localIPAddress.str();
-    request["deviceInformation"]["appMobilityServiceLevel"] = "APP_MOBILITY_NOT_ALLOWED";
-    request["deviceInformation"]["contextTransferState"] = "NOT_TRANSFERRED";
+    request["deviceInformation"] = nlohmann::json::array();
+    nlohmann::ordered_json val;
+    val["associateId"]["type"] = "UE_IPV4_ADDRESS";
+    val["associateId"]["value"] = localIPAddress.str();
+    val["appMobilityServiceLevel"] = "APP_MOBILITY_NOT_ALLOWED";
+    val["contextTransferState"] = "NOT_TRANSFERRED";
+    request["deviceInformation"].push_back(val);
+    nlohmann::ordered_json val2;
+    val2["associateId"]["type"] = "UE_IPV4_ADDRESS";
+    val2["associateId"]["value"] = "10.0.0.3";
+    val2["appMobilityServiceLevel"] = "APP_MOBILITY_WITH_CONFIRMATION";
+    val2["contextTransferState"] = "NOT_TRANSFERRED";
+    request["deviceInformation"].push_back(val2);
     request["expiryTime"] = 0;
     request["serviceConsumerId"]["appInstanceId"] = std::to_string(getId());
     request["serviceConsumerId"]["mepId"] = std::to_string(getId()+1); // mec platform id
 
     Http::sendPostRequest(&tcpSocket, request.dump().c_str(), serverHost.c_str(), uri.c_str());
-    cMessage *sendRequest = new cMessage("getrequest");
-    scheduleAt(simTime()+0.03, sendRequest);
+//    cMessage *sendRequest = new cMessage("getrequest");
+//    scheduleAt(simTime()+0.03, sendRequest);
 }
 
 void MobilityTester::sendGetRequest()
@@ -112,10 +121,13 @@ void MobilityTester::sendGetRequest()
     //Http::sendDeleteRequest(&tcpSocket, serverHost.c_str(), uri2.c_str());
     std::string uri2("/example/amsi/v1/app_mobility_services/0");
     nlohmann::ordered_json request;
-    request["deviceInformation"]["associateId"]["type"] = "UE_IPV4_ADDRESS";
-    request["deviceInformation"]["associateId"]["value"] = localIPAddress.str();
-    request["deviceInformation"]["appMobilityServiceLevel"] = "APP_MOBILITY_WITH_CONFIRMATION";
-    request["deviceInformation"]["contextTransferState"] = "NOT_TRANSFERRED";
+    request["deviceInformation"] = nlohmann::json::array();
+    nlohmann::ordered_json val;
+    val["associateId"]["type"] = "UE_IPV4_ADDRESS";
+    val["associateId"]["value"] = localIPAddress.str();
+    val["appMobilityServiceLevel"] = "APP_MOBILITY_WITH_CONFIRMATION";
+    val["contextTransferState"] = "NOT_TRANSFERRED";
+    request["deviceInformation"].push_back(val);
     request["expiryTime"] = 0;
     request["serviceConsumerId"]["appInstanceId"] = std::to_string(getId());
     request["serviceConsumerId"]["mepId"] = std::to_string(getId()+1); // mec platform id
