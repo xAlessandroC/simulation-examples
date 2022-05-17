@@ -40,7 +40,7 @@ network RealOrchNetwork
             @display("p=50,75;is=s");
         }
         configurator: Ipv4NetworkConfigurator {
-            @display("p=50,125");
+            @display("p=690,184.92;is=s");
         }
         //        router: Router {
         //            @display("p=419,81;i=device/smallrouter");
