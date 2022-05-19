@@ -54,5 +54,5 @@ network AmsNetwork
         }
     connections:
         serviceConsumer.pppg++ <--> Eth10G <--> router.pppg++;
-        mecHost.eth++ <--> router.ethg++;
+        mecHost.eth++ <--> router.pppg++;
 }
