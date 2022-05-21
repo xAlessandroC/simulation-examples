@@ -14,18 +14,16 @@
 // 
 
 package simulation_examples.app.MobilityTester;
-
 import inet.applications.contract.IApp;
-
-
 //
 // TODO auto-generated module
 //
-simple MobilityTester like IApp
+simple TriggerAMS like IApp
 {
+    
     parameters:
         string localAddress = default("");
-        int localPort = default(6005);
+        int localPort = default(6006);
         string remoteAddress = default("");
         int remotePort = default(5000);
     
