@@ -93,7 +93,7 @@ void MobilityTester::sendPostRequest()
     request["deviceInformation"].push_back(val2);
     request["expiryTime"] = 0;
     request["serviceConsumerId"]["appInstanceId"] = std::to_string(getId());
-    request["serviceConsumerId"]["mepId"] = std::to_string(getId()+1); // mec platform id
+    request["serviceConsumerId"]["mepId"] = "";//std::to_string(getId()+1); // mec platform id
 
     Http::sendPostRequest(&tcpSocket, request.dump().c_str(), serverHost.c_str(), uri.c_str());
 //    cMessage *sendRequest = new cMessage("getrequest");

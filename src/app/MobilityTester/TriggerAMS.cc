@@ -47,6 +47,7 @@ void TriggerAMS::handleMessage(cMessage *msg)
         tcpSocket.connect(destIPAddress, destPort);
         delete msg;
         cMessage *trigger = new cMessage("trigger");
+<<<<<<< HEAD
         scheduleAt(simTime()+2.0, trigger);
     }
     else if(msg->isSelfMessage() && strcmp(msg->getFullName(), "trigger") == 0)
@@ -84,5 +85,44 @@ void TriggerAMS::socketEstablished(inet::TcpSocket *socket)
 {
     EV << "Trigger::Socket established"<<endl;
     cMessage *msg = new cMessage("connect");
+=======
+        scheduleAt(simTime()+1, trigger);
+    }
+    else if(msg->isSelfMessage() && strcmp(msg->getFullName(), "trigger") == 0)
+    {
+        std::string uri("/example/amsi/v1/eventNotification/");
+        std::string serverHost = tcpSocket.getRemoteAddress().str() + ":" + std::to_string(tcpSocket.getRemotePort());
+
+        nlohmann::ordered_json request;
+        request["notificationType"] = "MobilityProcedureNotification";
+        request["associateId"] = nlohmann::json::array();
+
+        request["mobilityStatus"] = "INTERHOST_MOVEOUT_TRIGGERED";
+        request["_links"]["href"] = "";
+
+    //    if(targetAppInfo == nullptr)
+    //    {
+    //        object["targetAppInfo"]["appInstanceId"] = "";
+    //        object["targetAppInfo"]["commInterface"]["ipAddresses"] = nlohmann::json::array();
+    //        nlohmann::ordered_json empty_obj;
+    //        empty_obj["host"] = "";
+    //        empty_obj["port"] = 0;
+    //        object["targetAppInfo"]["commInterface"]["ipAddresses"].push_back(empty_obj);
+    //    }
+        //object["targetAppInfo"] = nlohmann::json::;
+
+        request["appInstanceId"] = "MECWarningAlertApp[0]";
+
+        EV << "Trigger ready: " << request.dump() << endl;
+
+        Http::sendPostRequest(&tcpSocket, request.dump().c_str(), serverHost.c_str(), uri.c_str());
+    }
+}
+
+void TriggerAMS::socketEstablished(inet::TcpSocket *socket)
+{
+    EV << "Trigger::Socket established"<<endl;
+    cMessage *msg = new cMessage("trigger");
+>>>>>>> branch 'main' of https://github.com/xAlessandroC/simulation-examples.git
     scheduleAt(simTime()+0.1, msg);
 }

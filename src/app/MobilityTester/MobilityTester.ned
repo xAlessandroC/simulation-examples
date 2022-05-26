@@ -25,7 +25,7 @@ simple MobilityTester like IApp
 {
     parameters:
         string localAddress = default("");
-        int localPort = default(6006);
+        int localPort = default(6005);
         string remoteAddress = default("");
         int remotePort = default(5000);
     
