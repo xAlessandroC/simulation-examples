@@ -42,6 +42,7 @@ O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 OBJS = \
     $O/src/app/AppForAddressResolving/AddressResolvingApp.o \
     $O/src/app/MobilityTester/MobilityTester.o \
+    $O/src/app/MobilityTester/TriggerAMS.o \
     $O/src/app/UEAppInteractionTester/UEAppInteractionTester.o \
     $O/src/app/fakeregistrationvim/FakeRegistrationVim.o \
     $O/src/app/instantiationmecpm/InstantiationMecpm.o \

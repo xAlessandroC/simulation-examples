@@ -72,9 +72,9 @@ network FinalNetwork
         ue: NRUe {
             @display("p=237.64375,310.45377");
         }
-//        ue2: NRUe {
-//            @display("p=237,394");
-//        }
+        //        ue2: NRUe {
+        //            @display("p=237,394");
+        //        }
         ualcmp: UALCMP {
             @display("p=591,51;i=device/smallrouter");
         }
