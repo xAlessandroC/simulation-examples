@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package simulation_examples.simulations.AMSRealScenario;
+package simulation_examples.simulations.dynamicMECHost;
 
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.networklayer.ipv4.RoutingTableRecorder;
@@ -33,8 +33,17 @@ import simu5g.nodes.mec.Dynamic.MECHostDyn;
 import inet.node.inet.Router;
 import simu5g.nodes.cars.MecCar;
 
-network FinalNetwork
+//
+// First simulation Network
+// @author Angelo Feraudo
+// @author Alessandro Calvio
+//
+network ParkNetwork
 {
+    parameters:
+        int numUe;
+        int numParkedCar;
+
     submodules:
         routingRecorder: RoutingTableRecorder {
             @display("p=50,75;is=s");
@@ -61,7 +70,7 @@ network FinalNetwork
             @display("p=352,212");
         }
         mecOrchestrator: MecOrchestratorHost {
-            @display("p=431,52;is=n;i=device/server");
+            @display("p=439,51;is=n;i=device/server");
         }
         mechost1: MECHostDyn { // Testing device (not real MECHost)
             @display("p=139,147;i=device/server");
@@ -69,15 +78,10 @@ network FinalNetwork
         gNodeB1: gNodeB {
             @display("p=139,302;is=vl");
         }
-        ue: NRUe {
-            @display("p=237.64375,310.45377");
+        ue[numUe]: NRUe {
+            @display("p=89,431");
         }
-        ue2: NRUe {
-            @display("p=237,394");
-        }
-        ualcmp: UALCMP {
-            @display("p=591,51;i=device/smallrouter");
-        }
+        ualcmp: UALCMP;
 
         router: Router {
             @display("p=523,138");
@@ -87,12 +91,10 @@ network FinalNetwork
             @display("p=690,139;is=n;i=device/server");
         }
 
-        car: MecCar {
-            @display("p=77,193;is=vs");
+        car[numParkedCar]: MecCar {
+            @display("p=78,200;is=vs");
         }
-        car2: MecCar {
-            @display("p=77,260;is=vs");
-        }
+
     connections allowunconnected:
 
 		// other links
@@ -111,4 +113,5 @@ network FinalNetwork
         iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
         mechost1.ppp++ <--> Eth10G <--> iUpf.pppg++;
         mechost1.ppp++ <--> Eth10G <--> gNodeB1.pppMEHost;
+
 }
