@@ -9,7 +9,7 @@ src/Makefile.vc
 *.sca
 *.vec
 *.vci
-*.anf
+# *.anf
 *.qtenvrc
 .settings/
 err/
