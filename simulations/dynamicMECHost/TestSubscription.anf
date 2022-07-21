@@ -1346,8 +1346,12 @@ df = pd.concat([stats, hists], sort=False)
 if df.empty:
     raise chart.ChartScriptError("The result filter returned no data.")
 
+# Prendere anche iterazione?
 df = df.loc[:, ["mean", "NUMUE", "stddev", "SKIP"]]
 df["NUMUE"] = df["NUMUE"].astype('int')
+df["mean"] = df["mean"].astype('float')
+df["stddev"] = df["stddev"].astype('float')
+print(df.dtypes)
 df_groupedNUMUE = df.groupby(["NUMUE", "SKIP"]).mean()
 df_groupedNUMUE.rename(columns = {"mean": "avg_rtt_time", "stddev": "avg_rtt_stddev"}, inplace = True)
 df_groupedNUMUE = df_groupedNUMUE.reset_index()
