@@ -5,7 +5,7 @@
         <input pattern="/simulation-examples/simulations/dynamicMECHost/results/TestSubscription-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/linechart.png" id="594309096" name="test" template="linechart_native" type="LINE">
+        <chart icon="icons/full/obj/linechart.png" id="485301683" name="test" template="linechart_native" type="LINE">
             <script><![CDATA[import math
 from omnetpp.scave import results, chart, utils
 
@@ -641,7 +641,7 @@ utils.export_data_if_needed(df, props)
             <property name="image_export_width" value="6"/>
             <property name="include_fields" value="false"/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="954938048" name="DownTime" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="2084918933" name="DownTime" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import matplotlib.pyplot as plt
 from functools import reduce
@@ -1333,7 +1333,7 @@ plt.xlabel("NUMUE")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/histogramchart.png" id="1994324655" name="Ping Comparison Time" template="boxwhiskers" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/histogramchart.png" id="422427381" name="Ping Comparison Time" template="boxwhiskers" type="MATPLOTLIB">
             <script><![CDATA[import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -1859,7 +1859,7 @@ plt.legend()
             <property name="matplotlibrc" value=""/>
             <property name="include_fields" value="false"/>
         </chart>
-        <chart icon="icons/full/obj/histogramchart.png" id="1662326504" name="Allocation Time" template="histogramchart_vectors_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/histogramchart.png" id="1778754620" name="Allocation Time" template="histogramchart_vectors_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import numpy as np
 from omnetpp.scave import results, chart, utils
@@ -2471,7 +2471,7 @@ Show over_underflow cell?
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1819458411" name="AllocationTime linegraph" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="991480102" name="AllocationTime linegraph" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 from omnetpp.scave import results, chart, utils
 import pandas as pd
@@ -2503,31 +2503,39 @@ if df.empty:
 
 
 
-df = df.loc[:, ["mean", "NUMUE", "NUMCARS", "stddev"]]
+df = df.loc[:, ["mean", "NUMUE", "NUMCARS", "stddev", "SKIP"]]
 #print(df)
 
 df["NUMUE"] = df["NUMUE"].astype('int')
-df["NUMCARS"] = df["NUMCARS"].astype('int')
+#df["NUMCARS"] = df["NUMCARS"].astype('int')
 df["mean"] = df["mean"].astype('float')
 df["stddev"] = df["stddev"].astype('float')
 
-df_grouped = df.groupby(["NUMUE", "NUMCARS"]).mean().reset_index()
-print(df_grouped)
+df_grouped = df.groupby(["NUMUE", "NUMCARS", "SKIP"]).mean().reset_index()
 
+df_grouped = df_grouped.loc[df_grouped["SKIP"] == "true"]
 numues = df_grouped["NUMUE"].unique()
 print(numues)
-print(df_grouped["NUMUE"])
+print(df_grouped)
 
 for i, cars in enumerate(df_grouped["NUMCARS"].unique()):
     means = df_grouped[df_grouped["NUMCARS"] == cars]["mean"].array
     stddevs = df_grouped[df_grouped["NUMCARS"] == cars]["stddev"].array
-    plt.errorbar(numues, means, marker=markers[i], markersize=7, linestyle="dashed", linewidth=1,label="{} parked cars".format(cars))
+    print("len ues {}; len means {}".format(len(numues), len(means)))
+    if len(numues) == len(means):
+        plt.errorbar(numues, means, marker=markers[i], markersize=7, linestyle="dashed", linewidth=1,label="{} parked cars".format(cars))
+    if len(numues) > len(means):
+        plt.errorbar(numues[:-(len(numues) - len(means))], means, marker=markers[i], markersize=7, linestyle="dashed", linewidth=1,label="{} parked cars".format(cars))
 
+print(df_grouped.loc[df_grouped["NUMCARS"] == 50])
+#plt.errorbar([50], df_grouped.loc([df_grouped["NUMCARS"] == 50 & df_grouped["NUMUE"] == 50])["mean"].array, marker=markers[i], markersize=7, linestyle="dashed", linewidth=1,label="{} parked cars".format(cars))
+    
 plt.xticks(numues, numues)
 plt.legend(loc="upper left")
 plt.grid(linestyle="--", linewidth=0.2)
 
-
+plt.xlabel("UEs")
+plt.ylabel("Allocation Time in secs")
 
 
 

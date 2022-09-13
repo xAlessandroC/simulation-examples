@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <analysis version="2">
     <inputs>
-        <input pattern="/simulation-examples/simulations/downTimeDynMecHost/results/TestSubscription-*.vec"/>
-        <input pattern="/simulation-examples/simulations/downTimeDynMecHost/results/TestSubscription-*.sca"/>
+        <input pattern="/simulation-examples/simulations/simulationsTesting/results/TestSubscription-*.vec"/>
+        <input pattern="/simulation-examples/simulations/simulationsTesting/results/TestSubscription-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/linechart.png" id="199890562" name="DownTime" template="linechart_mpl" type="MATPLOTLIB">
-            <script><![CDATA[import math
-import matplotlib.pyplot as plt
-from functools import reduce
+        <chart icon="icons/full/obj/barchart.png" id="1612504435" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
+            <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
-from omnetpp.scave import results, chart, utils
-
-def get_app_name(x):
-    return x.split(".")[-1]
-
-def get_value(x):
-    return float(str(x).replace("[","").replace("]",""))
-
-def get_diff(series):
-    return reduce(lambda x,y: abs(x-y), series)
-
+import matplotlib.pyplot as plt
 
 # get chart properties
 props = chart.get_properties()
@@ -29,80 +17,65 @@ utils.preconfigure_plot(props)
 
 # collect parameters for query
 filter_expression = props["filter"]
-start_time = float(props["vector_start_time"] or -math.inf)
-end_time = float(props["vector_end_time"] or math.inf)
+include_fields = props["include_fields"] == "true"
 
-# query vector data into a data frame
+# query scalar data into dataframe
+print()
 try:
-    df = results.get_vectors(filter_expression, include_attrs=True, include_runattrs=True, include_itervars=True, start_time=start_time, end_time=end_time)
+    vectors = results.get_vectors(props["filter"], include_attrs=True, include_runattrs=True, include_itervars=True)
+    stats = results.get_statistics(props["filter"], include_attrs=True, include_runattrs=True, include_itervars=True)
+    hists = results.get_histograms(props["filter"], include_attrs=True, include_runattrs=True, include_itervars=True)
 except results.ResultQueryError as e:
     raise chart.ChartScriptError("Error while querying results: " + str(e))
 
+print(vectors["iterationvarsf"])
+df = pd.concat([vectors, stats, hists], sort=False)
 if df.empty:
     raise chart.ChartScriptError("The result filter returned no data.")
 
-# apply vector operations
-df = utils.perform_vector_ops(df, props["vector_operations"])
 
-#print(df)
+df = df.loc[:,["vectime", "vecvalue", "repetition"]]
 print(df)
-main_df = pd.DataFrame()
-#df = df.loc[df["SKIP"] == "true"]
-main_df = df[["module", "vecvalue", "NUMUE", "repetition"]].reset_index(drop=True)
-print(main_df)
-#main_df = main_df.loc[(main_df["NUMUE"] != '30') & (main_df["repetition"] != '6')]
-main_df["MecAppName"] = main_df["module"].apply(lambda x : get_app_name(x))
-main_df["migTime"] = main_df["vecvalue"].apply(lambda x : get_value(x))
 
-#print(main_df.loc[main_df["NUMUE"]=="10"])
-main_df.drop("module", inplace=True, axis=1)
-main_df.drop("vecvalue", inplace=True, axis=1)
+print(df["vectime"][0][0])
 
-main_df = main_df.sort_values(by=["migTime"])
-#print(main_df)
-#main_df = main_df.groupby(["MecAppName"]).diff().dropna().reset_index(drop=True)
-print(main_df.loc[main_df["NUMUE"]=="10"])
-main_df = main_df.groupby(["repetition","NUMUE", "MecAppName"]).agg({'migTime': get_diff}).reset_index()
-print(main_df.loc[main_df["NUMUE"]=="10"])
-#main_df = main_df.groupby(["repetition"]).mean().reset_index(drop=True)
-print(main_df)
-main_df["NUMUE"] = main_df["NUMUE"].astype(int)
-main_df = main_df.sort_values(by=["NUMUE"])
-ues = main_df["NUMUE"].unique()
-all_data = []
-data_means = []
-data_std = []
+timeline = 0 
+interval = 1 # interval set to one second
+maxValue = 24
+values = np.zeros(24) # one value for each hour
+array_index = 0
+print(df["vectime"][0])
+while timeline < maxValue:
+    for index, actual_time in enumerate(df["vectime"][0]): 
+        if actual_time >= timeline and actual_time < (timeline+interval):
+            values[array_index] = values[array_index] + df["vecvalue"][0][index] 
+    timeline = timeline + interval
+    array_index = array_index + 1
+print(values)
 
-for index, value in enumerate(ues):
-    all_data.append(main_df.loc[main_df["NUMUE"]==value]["migTime"].to_numpy())
-    data = main_df.loc[main_df["NUMUE"]==value]["migTime"].to_numpy()
-    data_means.append(np.mean(data))
-    data_std.append(np.std(data))
+width = 0.50
+timeline_list = np.arange(timeline)
+rects_remote = plt.bar(timeline_list, values, width, label="Migrations")
+plt.xticks(timeline_list, labels=timeline_list)
+plt.xlabel("Time hours")
+plt.ylabel("Total Migrations")
+        
+        
+    
 
-print(all_data)
-#print(main_df)
+    
+    
+    
+    
 
-#all_data = main_df["migTime"].to_numpy()
-#plt.ylim(bottom=0)
-# BOX PLOT
-bplot = plt.boxplot(all_data, vert=True, patch_artist=True, labels=ues, showfliers=False)
-#main_df.boxplot(by="NUMUE", column=["migTime"])
-plt.ylabel("Down Time in seconds")
-plt.xlabel("NUMUE")
-# BAR CHART
-#print(ues)
-#print(data_means)
-#print(data_std)
-#plt.bar(ues, data_means, color="cyan")
-#plt.errorbar(ues, data_means, data_std, fmt="o", ecolor="red", color="green")
 
-# plot
-#utils.plot_vectors(df, props)
 
-#utils.postconfigure_plot(props)
 
-#utils.export_image_if_needed(props)
-#utils.export_data_if_needed(df, props)
+
+
+
+
+
 ]]></script>
             <dialogPage id="INPUT" label="Input"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <xswt xmlns:x="http://sweet_swt.sf.net/xswt">
@@ -113,48 +86,99 @@ plt.xlabel("NUMUE")
     <package name="org.eclipse.swt.layout" />
     <package name="org.eclipse.swt.custom" />
   </import>
-  <layout x:class="GridLayout" numColumns="1" />
+  <layout x:class="GridLayout" numColumns="2" />
   <x:children>
-    <label text="Filter expression:" />
-    <styledText x:id="filter" x:style="BORDER|V_SCROLL|H_SCROLL" x:id.contentAssist="filter" x:id.resultType="vector">
-      <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="true" />
+    <label text="Filter expression:" >
+        <layoutData x:class="GridData" horizontalSpan="2" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+    </label>
+
+    <styledText x:id="filter" x:style="BORDER|V_SCROLL|H_SCROLL" x:id.contentAssist="filter" x:id.resultType="scalar">
+      <layoutData x:class="GridData" horizontalSpan="2" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="true" />
     </styledText>
+    
+    <button x:id="include_fields" x:style="CHECK" text="Include fields">
+      <layoutData x:class="GridData" horizontalAlignment="END" />
+    </button>
+    
     <button x:id="simplify" x:style="PUSH" text="Simplify" x:id.role="simplify" x:id.targetControl="filter">
       <layoutData x:class="GridData" horizontalAlignment="END" />
     </button>
-    <composite>
-      <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" />
-      <layout x:class="GridLayout" numColumns="2" makeColumnsEqualWidth="false" />
-      <x:children>
-        <group text="Vector operations (one per line)">
-          <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="true" />
-          <layout x:class="GridLayout" numColumns="1" />
-          <x:children>
-            <text x:id="vector_operations" x:style="BORDER|MULTI|V_SCROLL|H_SCROLL" x:id.contentAssist="vectorops">
-              <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="true" />
-            </text>
-          </x:children>
-        </group>
-        <group text="Crop interval">
-          <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="false" verticalAlignment="FILL" grabExcessVerticalSpace="true" />
-          <layout x:class="GridLayout" numColumns="2" />
-          <x:children>
-            <label text="Start time (sec):" />
-            <text x:id="vector_start_time" x:style="BORDER">
-              <layoutData x:class="GridData" widthHint="120" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="false" />
-            </text>
-            <label text="End time (sec):" />
-            <text x:id="vector_end_time" x:style="BORDER">
-              <layoutData x:class="GridData" widthHint="120" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="false" />
-            </text>
-          </x:children>
-        </group>
-      </x:children>
-    </composite>
+
+    <label text="Multiple attributes can be selected in both fields below, separated by commas.">
+        <layoutData x:class="GridData" horizontalSpan="2" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+    </label>
+
+    <label text="Groups:"/>
+    <combo x:id="groups" x:style="BORDER" x:id.content="module,name,experiment,module+name,$itervarnames,$runattrnames">
+        <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+    </combo>
+
+    <label text="Series:"/>
+    <combo x:id="series" x:style="BORDER" x:id.content="module,name,experiment,module+name,$itervarnames,$runattrnames">
+        <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+    </combo>
+
+    <label text="Scalar values will be averaged across all attributes not selected above.">
+        <layoutData x:class="GridData" horizontalSpan="2" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+    </label>
+
   </x:children>
 </xswt>
 ]]></dialogPage>
-            <dialogPage id="LINES" label="Lines"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+            <dialogPage id="BARS" label="Bars"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<xswt xmlns:x="http://sweet_swt.sf.net/xswt">
+
+  <import xmlns="http://sweet_swt.sf.net/xswt">
+    <package name="java.lang"/>
+    <package name="org.eclipse.swt.widgets" />
+    <package name="org.eclipse.swt.graphics" />
+    <package name="org.eclipse.swt.layout" />
+    <package name="org.eclipse.swt.custom" />
+    <package name="org.omnetpp.common.wizard.support" />
+    <package name="org.omnetpp.ned.editor.wizards.support" />
+    <package name="org.omnetpp.cdt.wizard.support" />
+  </import>
+  <layout x:class="GridLayout"/>
+
+  <x:children>
+
+    <group text="Bars">
+      <layoutData x:class="GridData" horizontalSpan="1" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="false"/>
+      <layout x:class="GridLayout" numColumns="2"/>
+      <x:children>
+
+        <!-- Baseline -->
+        <label text="Baseline:"/>
+        <text x:id="baseline" x:id.default="0" x:style="BORDER">
+          <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+        </text>
+
+        <!-- Bar placement:Aligned/Overlap/InFront/Stacked -->
+        <label text="Bar placement:"/>
+        <combo x:id="bar_placement" x:id.default="Aligned" x:style="BORDER|READ_ONLY">
+          <add x:p0="Aligned"/>
+          <add x:p0="Overlap"/>
+          <add x:p0="InFront"/>
+          <add x:p0="Stacked"/>
+        </combo>
+
+        <!-- Rotate X labels by:0/30/45/60/90 -->
+        <label text="Rotate x labels by:"/>
+        <combo x:id="xlabel_rotation" x:id.default="0" x:style="BORDER|READ_ONLY">
+          <add x:p0="0"/>
+          <add x:p0="30"/>
+          <add x:p0="45"/>
+          <add x:p0="60"/>
+          <add x:p0="90"/>
+        </combo>
+
+      </x:children>
+    </group>
+
+  </x:children>
+</xswt>
+]]></dialogPage>
+            <dialogPage id="CONFINT" label="Confidence Interval"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <xswt xmlns:x="http://sweet_swt.sf.net/xswt">
 
   <import xmlns="http://sweet_swt.sf.net/xswt">
@@ -171,76 +195,24 @@ plt.xlabel("NUMUE")
 
   <x:children>
 
-    <group text="Lines">
-      <layoutData x:class="GridData" horizontalSpan="1" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="false"/>
+    <group text="Error Markers">
+      <layoutData x:class="GridData" horizontalSpan="2" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="false"/>
       <layout x:class="GridLayout" numColumns="2"/>
       <x:children>
 
-    <label text="Draw style:"/>
-    <combo x:id="drawstyle" x:id.default="auto" x:style="BORDER|READ_ONLY">
-      <add x:p0="auto"/>
+    <label text="Confidence level:"/>
+    <combo x:id="confidence_level" x:id.default="95%" x:style="BORDER|READ_ONLY">
       <add x:p0="none"/>
-      <add x:p0="linear"/>
-      <add x:p0="steps-pre"/>
-      <add x:p0="steps-mid"/>
-      <add x:p0="steps-post"/>
+      <add x:p0="80%"/>
+      <add x:p0="85%"/>
+      <add x:p0="90%"/>
+      <add x:p0="95%"/>
+      <add x:p0="99.5%"/>
+      <add x:p0="99.9%"/>
     </combo>
 
-    <label text="Line color:"/>
-    <ColorChooser x:id="linecolor" x:id.default="" x:style="BORDER">
-      <layoutData x:class="GridData" horizontalAlignment="BEGINNING" grabExcessHorizontalSpace="false"/>
-    </ColorChooser>
-
-    <label text="Line style:"/>
-    <combo x:id="linestyle" x:id.default="solid" x:style="BORDER|READ_ONLY">
-      <add x:p0="none"/>
-      <add x:p0="solid"/>
-      <add x:p0="dotted"/>
-      <add x:p0="dashed"/>
-      <add x:p0="dashdot"/>
-    </combo>
-
-    <label text="Line width:"/>
-    <spinner x:id="linewidth" x:id.default="1.5" minimum="0" digits="1" selection="15" maximum="1000" x:style="BORDER"/>
-
-      </x:children>
-    </group>
-
-    <group text="Markers">
-      <layoutData x:class="GridData" horizontalSpan="1" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" verticalAlignment="FILL" grabExcessVerticalSpace="false"/>
-      <layout x:class="GridLayout" numColumns="2"/>
-      <x:children>
-
-    <label text="Marker:"/>
-    <combo x:id="marker" x:id.default="none" x:style="BORDER">
-      <add x:p0="auto"/>
-      <add x:p0="none"/>
-      <add x:p0=". (dot)"/>
-      <add x:p0=", (point)"/>
-      <add x:p0="v (triangle down)"/>
-      <add x:p0="^ (triangle up)"/>
-      <add x:p0="&lt; (triangle left)"/>
-      <add x:p0="&gt; (triangle right)"/>
-      <add x:p0="1 (tri down)"/>
-      <add x:p0="2 (tri up)"/>
-      <add x:p0="3 (tri left)"/>
-      <add x:p0="4 (tri right)"/>
-      <add x:p0="| (vline)"/>
-      <add x:p0="_ (hline)"/>
-      <add x:p0="8 (octagon)"/>
-      <add x:p0="o (circle)"/>
-      <add x:p0="s (square)"/>
-      <add x:p0="p (pentagon)"/>
-      <add x:p0="* (star)"/>
-      <add x:p0="+ (plus)"/>
-      <add x:p0="x (cross)"/>
-      <add x:p0="D (diamond)"/>
-      <add x:p0="d (thin diamond)"/>
-      <!-- TODO the rest...  -->
-    </combo>
-
-    <label text="Marker size:"/>
-    <spinner x:id="markersize" x:id.default="5" selection="6" minimum="0" maximum="100" x:style="BORDER"/>
+    <label text="Cap size:"/>
+    <spinner x:id="cap_size" x:id.default="4" selection="4" minimum="0" maximum="10" x:style="BORDER"/>
 
       </x:children>
     </group>
@@ -282,7 +254,7 @@ plt.xlabel("NUMUE")
 
     <!-- X Axis { -->
     <group text="X axis">
-      <layoutData x:class="GridData" horizontalSpan="1" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+      <layoutData x:class="GridData" horizontalSpan="1" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true"/>
       <layout x:class="GridLayout" numColumns="2"/>
       <x:children>
 
@@ -290,20 +262,6 @@ plt.xlabel("NUMUE")
     <text x:id="xaxis_title" x:style="BORDER">
       <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
     </text>
-
-    <label text="Min:"/>
-    <text x:id="xaxis_min" x:style="BORDER">
-      <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
-    </text>
-
-    <label text="Max:"/>
-    <text x:id="xaxis_max" x:style="BORDER">
-      <layoutData x:class="GridData" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
-    </text>
-
-    <button x:id="xaxis_log" x:id.default="false" text="Logarithmic" x:style="CHECK">
-      <layoutData x:class="GridData" horizontalSpan="2"/>
-    </button>
 
     <!-- } -->
       </x:children>
@@ -661,42 +619,38 @@ plt.xlabel("NUMUE")
             <property name="matplotlibrc.legend.frameon" value="true"/>
             <property name="matplotlibrc.legend.fancybox" value="false"/>
             <property name="grid_show" value="true"/>
-            <property name="vector_end_time" value=""/>
-            <property name="linecolor" value=""/>
+            <property name="confidence_level" value="95%"/>
             <property name="matplotlibrc.figure.facecolor" value=""/>
             <property name="legend_prefer_result_titles" value="true"/>
             <property name="legend_manual" value="false"/>
             <property name="yaxis_title" value=""/>
             <property name="legend_replacements" value=""/>
-            <property name="title" value="Service Unavailability Time"/>
+            <property name="title" value=""/>
             <property name="legend_automatic" value="true"/>
-            <property name="vector_operations" value=""/>
             <property name="cycle_seed" value="0"/>
+            <property name="bar_placement" value="Aligned"/>
             <property name="yaxis_log" value="false"/>
             <property name="image_export_height" value="4"/>
-            <property name="xaxis_log" value="false"/>
             <property name="legend_placement" value="upper right"/>
             <property name="data_export_filename" value=""/>
             <property name="xaxis_title" value=""/>
+            <property name="xlabel_rotation" value="0"/>
             <property name="grid_density" value="Major"/>
+            <property name="groups" value=""/>
             <property name="yaxis_min" value=""/>
+            <property name="baseline" value="0"/>
             <property name="image_export_filename" value=""/>
-            <property name="xaxis_min" value=""/>
             <property name="matplotlibrc.axes.facecolor" value=""/>
-            <property name="linewidth" value="1.5"/>
+            <property name="cap_size" value="4"/>
             <property name="legend_format" value=""/>
-            <property name="filter" value="name =~ migration:vector"/>
-            <property name="vector_start_time" value=""/>
-            <property name="linestyle" value="solid"/>
-            <property name="markersize" value="5"/>
-            <property name="drawstyle" value="auto"/>
-            <property name="marker" value="none"/>
+            <property name="filter" value="module=~&quot;ParkNetwork.mechost*.mecPlatform.mecService[1]&quot;"/>
+            <property name="series" value=""/>
             <property name="plt.style" value="default"/>
             <property name="legend_show" value="true"/>
             <property name="matplotlibrc.legend.shadow" value="false"/>
+            <property name="include_fields" value="false"/>
             <property name="simplify" value="false"/>
             <property name="yaxis_max" value=""/>
-            <property name="xaxis_max" value=""/>
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
