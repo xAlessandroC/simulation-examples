@@ -25,9 +25,12 @@ simple ModuleSpawner
        	double intervalStart = default(0);
        	double intervalBurst = default(10);
        	double delta = default(2);
-       	
+       	int fileParameters = default(0);
        	int parkCapacity = default(50);
        	int initialParkedCars = default(20);
+       	int initialUes = default(0);
+       	int initTimeLine = default(0);
+       	bool initFromFile = default(false);
        	
        	@signal[parkedCars](type=long);
     	@statistic[parkedCars](source=parkedCars; record=vector; interpolationmode=none);

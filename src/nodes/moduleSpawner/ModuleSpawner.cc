@@ -4,12 +4,12 @@
 
 Define_Module(ModuleSpawner);
 
-
 ModuleSpawner::ModuleSpawner(){
 
 }
 
 ModuleSpawner::~ModuleSpawner(){
+
     cancelAndDelete(createNewPC_);
     cancelAndDelete(createNewUE_);
     cancelAndDelete(burstGeneration_);
@@ -37,13 +37,19 @@ void ModuleSpawner::initialize(int stage)
     UEcounter = 0;
     UEcreatedcounter = 0;
 
-    timeline = 0;
+    timeline = par("initTimeLine").intValue();
 
     intervalStart = par("intervalStart").doubleValue();
     intervalBurst = par("intervalBurst").doubleValue();
     parkcapacity_ = par("parkCapacity").intValue();
     initialParkedCars = par("initialParkedCars").intValue();
+    initialUes = par("initialUes").intValue();
     delta = par("delta").doubleValue();
+
+    initFromFile = par("initFromFile").boolValue();
+    if(initFromFile){
+        initializeFromFile();
+    }
 
     getParentModule()->subscribe("logicTerminated", this);
     getParentModule()->subscribe("parkingReleased", this);
@@ -56,7 +62,33 @@ void ModuleSpawner::initialize(int stage)
 //    scheduleAfter(4.0, new cMessage("createNewDebugUE_"));
 
     scheduleAt(intervalStart+5, burstGeneration_);
-    scheduleAt(simTime()+2, initializePark_);
+    scheduleAt(intervalStart+0.1, initializePark_);
+}
+
+void ModuleSpawner::initializeFromFile(){
+    std::ifstream inputFile;
+    inputFile.open("./spawnerInitData.txt", std::ios::in);
+
+    std::string line;
+    std::getline(inputFile, line);
+    initialParkedCars = std::stoi(line);
+    EV << "number of parked car " << initialParkedCars << endl;
+    std::cout << "number of parked car " << initialParkedCars << endl;
+
+    std::getline(inputFile, line);
+    size_t pos = 0;
+    std::string token;
+    std::cout << "Times: ";
+    while((pos = line.find(",")) != std::string::npos){
+        token = line.substr(0, pos);
+        line.erase(0, pos + 1);
+        initParkTimes.push_back(stod(token));
+        EV << "time " << token << endl;
+        std::cout << "time " << token;
+    }
+    std::cout << " " << endl;
+
+    inputFile.close();
 }
 
 void ModuleSpawner::handleMessage(cMessage *msg)
@@ -65,6 +97,7 @@ void ModuleSpawner::handleMessage(cMessage *msg)
     if(strcmp(msg->getName(), "initializePark") == 0)
     {
         initializePark();
+        initializeUes();
     }
     else if(strcmp(msg->getName(), "createNewPC") == 0){
         EV << "Generating PC at " << simTime() << endl;
@@ -96,6 +129,7 @@ void ModuleSpawner::handleMessage(cMessage *msg)
         double lambda_cars = lambdaValuesVehicles[timeline] * parkcapacity_;
         int burst_cars_dim = static_cast<int>(poisson(lambda_cars)); // poisson distribution cars
         int burst_ue_dim = static_cast<int>(poisson(lambdaValuesUEs[timeline])); // poisson distribution ues
+        burst_ue_dim = burst_ue_dim;
 
         std::cout << "Bursting cars: " << burst_cars_dim << ", Bursting UEs: " << burst_ue_dim << ", TIME: " << timeline << endl;
 
@@ -125,11 +159,25 @@ void ModuleSpawner::handleMessage(cMessage *msg)
 
 void ModuleSpawner::initializePark() {
 
+    int parkTime;
     for(int i = 0; i < initialParkedCars; i++)
     {
-        generateNewPC();
+        parkTime = -1;
+        if(!initParkTimes.empty())
+            parkTime = initParkTimes[i];
+        generateNewPC(parkTime);
     }
 }
+
+
+void ModuleSpawner::initializeUes()
+{
+    for(int i = 0; i < initialUes; i++)
+    {
+        generateNewUE();
+    }
+}
+
 
 
 void ModuleSpawner::generatePCBurst(int burstDim){
@@ -174,7 +222,7 @@ void ModuleSpawner::generateUEBurst(int burstDim){
     }
 }
 
-void ModuleSpawner::generateNewPC(){
+void ModuleSpawner::generateNewPC(double initParkTime){
     EV << "ModuleSpawner::generating new PC" << endl;
 
 
@@ -202,9 +250,15 @@ void ModuleSpawner::generateNewPC(){
     // TODO inserire parkTime secondo distribuzione
     // mean = 202.80
     // stddev = 135.07
-    double parkTime = truncnormal(202.80, 135.07);
+    double parkTime = truncnormal(202.80, 135.07) * 60; // from minutes to seconds
+    if(initParkTime != -1)
+    {
+        parkTime = initParkTime;
+    }
     std::cout << "Time car park: " << parkTime << ", actualTime: " << simTime() << endl;
     PCmodule->getSubmodule("app", 0)->par("parkTime") = parkTime;
+    startParkTimes.push_back(simTime().dbl());
+
 //    PCmodule->getSubmodule("mobility")->par("initialX") = 50.0;
 //    PCmodule->getSubmodule("mobility")->par("initialY") = 302.0 + (PCcreatedcounter - 1) * 70;
 
@@ -285,6 +339,36 @@ void ModuleSpawner::receiveSignal(cComponent *source, simsignal_t signalID, cons
         EV << "ModuleSpawner::signal not recognized" << endl;
     }
 }
+
+
+void ModuleSpawner::finish()
+{
+    std::cout << "Cars parked at " << simTime() << ": " << PCcounter << endl;
+    std::cout << "Ue in coverage at " << simTime() << ": " << UEcounter << endl;
+    std::cout << "Timeline: " << timeline << endl;
+    std::cout << "Remaining time to park" << endl;
+    double parkTime;
+    int index;
+    double remainingTime;
+
+    std::ofstream datafile;
+    datafile.open("./spawnerInitData.txt", std::ios::trunc);
+    datafile << PCcounter << endl;
+//    datafile <<"{";
+    for(auto pc : PCs)
+    {
+        parkTime = pc->getSubmodule("app", 0)->par("parkTime").doubleValue();
+        index = std::atoi(pc->getName()+2);
+        remainingTime = parkTime + startParkTimes[index-1] - simTime().dbl();
+//        std::cout << "Time park remaining for vehicle: " << index << " " << remainingTime << "s" << endl;
+        datafile << remainingTime << ",";
+    }
+//    datafile <<"}"<<endl;
+
+    datafile.close();
+
+}
+
 
 void ModuleSpawner::finish(cComponent *component, simsignal_t id){
     EV << "ModuleSpawner::finished called" << endl;

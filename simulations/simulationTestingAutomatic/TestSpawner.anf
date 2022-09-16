@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <analysis version="2">
     <inputs>
-        <input pattern="/simulation-examples/simulations/simulationsTesting/results/TestSpawner-*.vec"/>
-        <input pattern="/simulation-examples/simulations/simulationsTesting/results/TestSpawner-*.sca"/>
+        <input pattern="/simulation-examples/simulations/simulationTestingAutomatic/results/TestSpawner-*.vec"/>
+        <input pattern="/simulation-examples/simulations/simulationTestingAutomatic/results/TestSpawner-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/barchart.png" id="81479002" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="218284055" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -658,7 +658,7 @@ plt.ylabel("Total Migrations")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1989897756" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="480932163" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
