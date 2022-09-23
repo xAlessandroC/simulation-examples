@@ -5,7 +5,7 @@
         <input pattern="/simulation-examples/simulations/simulationTestingAutomatic/results/TestSpawner-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/barchart.png" id="218284055" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="1629345190" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -34,8 +34,7 @@ df = pd.concat([vectors, stats, hists], sort=False)
 if df.empty:
     raise chart.ChartScriptError("The result filter returned no data.")
 
-
-df = df.loc[:,["vectime", "vecvalue", "repetition"]]
+df = df.loc[:,["vectime", "vecvalue", "repetition", "PARKCAPACITY"]]
 
 
 # print(df["vectime"][0][0])
@@ -43,25 +42,36 @@ df = df.loc[:,["vectime", "vecvalue", "repetition"]]
 timeline = 0 
 interval = 3600 # interval set to one second
 maxValue = 86400
-values = np.zeros(24) # one value for each hour
+values = {} # one value for each hour
 array_index = 0
-print(df)
+#print(df)
+# Vector initialization
+for capacity in df["PARKCAPACITY"].unique():
+    values[capacity] = []
+    values[capacity] = np.zeros(24)
+
+print(values)
 for i, line in df.iterrows():
     timeline = 0
     array_index = 0
+    capacity = line["PARKCAPACITY"]
     while timeline < maxValue:
         for index, actual_time in enumerate(line["vectime"]): 
             if actual_time >= timeline and actual_time < (timeline+interval):
-                values[array_index] = values[array_index] + line["vecvalue"][index] 
+                values[capacity][array_index] = values[capacity][array_index] + line["vecvalue"][index] 
         timeline = timeline + interval
         array_index = array_index + 1
     print(values)
 
-width = 0.50
+width = 0.35
+pos = 0
 timeline_list = np.arange(24)
-rects_remote = plt.bar(timeline_list, values, width, label="Migrations")
+for key in values.keys():
+    rects_remote = plt.bar(timeline_list+pos, values[key], width, label="park capacity {}".format(key))
+    pos=pos+width
 plt.xticks(timeline_list, labels=timeline_list)
 plt.xlabel("Time hours")
+plt.legend()
 plt.ylabel("Total Migrations")
         
         
@@ -658,7 +668,7 @@ plt.ylabel("Total Migrations")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="480932163" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1998923455" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -685,31 +695,37 @@ except results.ResultQueryError as e:
 df = pd.concat([vectors, stats, hists], sort=False)
 if df.empty:
     raise chart.ChartScriptError("The result filter returned no data.")
-print(df)
+#print(df)
 
-
+values = {}
 
 timeline = 0 
 interval = 3600 # interval set to one second
 maxValue = 86400
-values = np.zeros(24) # one value for each hour
+#values = np.zeros(24) # one value for each hour
 array_index = 0
-print(df["vectime"][0])
+# Vector initialization
+for capacity in df["PARKCAPACITY"].unique():
+    values[capacity] = []
+    values[capacity] = np.zeros(24)
+    
 for line, capacity in enumerate(df["PARKCAPACITY"]):
+    #print(capacity)
     if df["name"][line] == "parkedCars:vector":
-        print(capacity)
         while timeline < maxValue:
             for index, actual_time in enumerate(df["vectime"][line]): 
                 if actual_time >= timeline and actual_time < (timeline+interval):
-                    values[array_index] = df["vecvalue"][line][index] 
+                    values[capacity][array_index] = df["vecvalue"][line][index] 
             timeline = timeline + interval
             array_index = array_index + 1
         
-#        plt.errorbar(np.arange(24), values, marker='o', markersize=6, linestyle="dashed", linewidth=1,label="park capacity {}".format(capacity))
+        #plt.errorbar(np.arange(24), values, marker='o', markersize=6, linestyle="dashed", linewidth=1,label="park capacity {}".format(capacity))
         
         timeline = 0
         array_index = 0
-plt.errorbar(np.arange(24), values, marker='o', markersize=6, linestyle="dashed", linewidth=1,label="park capacity {}".format(capacity))
+
+for key in values.keys():
+    plt.errorbar(np.arange(24), values[key], marker='o', markersize=6, linestyle="dashed", linewidth=1,label="park capacity {}".format(key))
 
 #plt.xticks(numues, numues)
 plt.xticks(np.arange(24), labels=np.arange(24))

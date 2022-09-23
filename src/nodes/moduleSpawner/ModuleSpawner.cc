@@ -39,6 +39,8 @@ void ModuleSpawner::initialize(int stage)
 
     timeline = par("initTimeLine").intValue();
 
+    vimApp = getParentModule()->getSubmodule("mechost1")->getSubmodule("vim")->getSubmodule("vimApp");
+
     intervalStart = par("intervalStart").doubleValue();
     intervalBurst = par("intervalBurst").doubleValue();
     parkcapacity_ = par("parkCapacity").intValue();
@@ -47,8 +49,13 @@ void ModuleSpawner::initialize(int stage)
     delta = par("delta").doubleValue();
 
     initFromFile = par("initFromFile").boolValue();
+    filename_ << "spawnerInitData-" << parkcapacity_ << ".txt";
     if(initFromFile){
         initializeFromFile();
+    }
+
+    if(initialParkedCars == 0){
+        includeMecHost(true);
     }
 
     getParentModule()->subscribe("logicTerminated", this);
@@ -67,7 +74,7 @@ void ModuleSpawner::initialize(int stage)
 
 void ModuleSpawner::initializeFromFile(){
     std::ifstream inputFile;
-    inputFile.open("./spawnerInitData.txt", std::ios::in);
+    inputFile.open(filename_.str().c_str(), std::ios::in);
 
     std::string line;
     std::getline(inputFile, line);
@@ -265,6 +272,10 @@ void ModuleSpawner::generateNewPC(double initParkTime){
     PCmodule->scheduleStart(simTime());
     PCmodule->callInitialize();
 
+    if(PCcounter == 1){
+        includeMecHost(false);
+    }
+
     EV << "ModuleSpawner::new PC started" << endl;
 }
 
@@ -310,6 +321,10 @@ void ModuleSpawner::deletePC(const char* PCName){
         }
     }
     PCcounter--;
+
+    if(PCcounter == 0){
+        includeMecHost(true);
+    }
 }
 
 void ModuleSpawner::deleteUE(const char*  UEName){
@@ -323,6 +338,11 @@ void ModuleSpawner::deleteUE(const char*  UEName){
         }
     }
     UEcounter--;
+}
+
+void ModuleSpawner::includeMecHost(bool include){
+
+    vimApp->par("skipLocalResources") = !include;
 }
 
 // Listener methods
@@ -352,7 +372,7 @@ void ModuleSpawner::finish()
     double remainingTime;
 
     std::ofstream datafile;
-    datafile.open("./spawnerInitData.txt", std::ios::trunc);
+    datafile.open(filename_.str().c_str(), std::ios::trunc);
     datafile << PCcounter << endl;
 //    datafile <<"{";
     for(auto pc : PCs)

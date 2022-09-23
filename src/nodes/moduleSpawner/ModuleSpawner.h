@@ -50,6 +50,8 @@ class ModuleSpawner : public cSimpleModule, public cIListener
 
     std::vector<double> startParkTimes;
 
+    std::stringstream filename_;
+
 //    std::vector <double> initParkTimes {5980.12, 1564.98, 7742.84, 25027.3, 25436.4}; // from 0 to 21600
 //    std::vector<double> initParkTimes {542.1, 17827.1, 18236.1, 11799.9}; // from 21600 to 28800
 //    std::vector<double> initParkTimes {14227.1, 14636.1, 8199.1}; //from 28800 to 32400
@@ -119,11 +121,13 @@ class ModuleSpawner : public cSimpleModule, public cIListener
     simsignal_t parkedCars_;
     simsignal_t ues_;
 
+    cModule* vimApp;
 
     private:
         void deletePC(const char* PCName);
         void deleteUE(const char* UEName);
         void initializeFromFile();
+        void includeMecHost(bool include);
 
     protected:
         virtual void initialize(int stage) override;
