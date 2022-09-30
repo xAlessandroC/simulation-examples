@@ -5,7 +5,7 @@
         <input pattern="/simulation-examples/simulations/simulationTestingAutomatic/results/TestSpawner-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/barchart.png" id="1629345190" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="1496682254" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -668,7 +668,7 @@ plt.ylabel("Total Migrations")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1998923455" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1916018069" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -695,7 +695,7 @@ except results.ResultQueryError as e:
 df = pd.concat([vectors, stats, hists], sort=False)
 if df.empty:
     raise chart.ChartScriptError("The result filter returned no data.")
-#print(df)
+print(df)
 
 values = {}
 
@@ -733,7 +733,7 @@ plt.xticks(np.arange(24), labels=np.arange(24))
 plt.legend(loc="upper right")
 plt.grid(linestyle="--", linewidth=0.2)
 
-plt.xlabel("UEs")
+plt.xlabel("Day Hours")
 plt.ylabel("Parked Vehicles")
 
 

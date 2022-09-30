@@ -54,10 +54,6 @@ void ModuleSpawner::initialize(int stage)
         initializeFromFile();
     }
 
-    if(initialParkedCars == 0){
-        includeMecHost(true);
-    }
-
     getParentModule()->subscribe("logicTerminated", this);
     getParentModule()->subscribe("parkingReleased", this);
 
@@ -138,12 +134,25 @@ void ModuleSpawner::handleMessage(cMessage *msg)
         int burst_ue_dim = static_cast<int>(poisson(lambdaValuesUEs[timeline])); // poisson distribution ues
         burst_ue_dim = burst_ue_dim;
 
+        // if there are no initial cars parked and we are not going to generate it in 3600s then we should
+        // include the MECHost
+        if(initialParkedCars == 0 && burst_cars_dim == 0){
+           includeMecHost(true);
+        }
         std::cout << "Bursting cars: " << burst_cars_dim << ", Bursting UEs: " << burst_ue_dim << ", TIME: " << timeline << endl;
 
         if((burst_cars_dim + PCcounter) > parkcapacity_)
             burst_cars_dim = parkcapacity_ - PCcounter;
 
-        emit(parkedCars_, PCcounter);
+        int counter = PCcounter;
+        if(timeline == 0)
+        {
+            // At midnight we start with an empty file (0 intial parked cars), but
+            // we may generate them in 3600s
+            counter = burst_cars_dim;
+        }
+        emit(parkedCars_, counter);
+
         emit(ues_, UEcounter);
 
         generatePCBurst(burst_cars_dim);
