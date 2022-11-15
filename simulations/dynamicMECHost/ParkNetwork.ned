@@ -17,7 +17,9 @@ package simulation_examples.simulations.dynamicMECHost;
 
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.networklayer.ipv4.RoutingTableRecorder;
+import inet.node.ethernet.Eth100G;
 import inet.node.ethernet.Eth10G;
+import inet.node.ethernet.Eth1G;
 import inet.node.inet.Router;
 import inet.node.inet.StandardHost;
 
@@ -31,6 +33,7 @@ import simu5g.nodes.mec.UALCMP.UALCMP;
 import simu5g.nodes.mec.Dynamic.MEO.MecOrchestratorHost;
 import simu5g.nodes.mec.Dynamic.MECHostDyn;
 import inet.node.inet.Router;
+import inet.node.ethernet.EthernetSwitch;
 import simu5g.nodes.cars.MecCar;
 
 //
@@ -49,7 +52,7 @@ network ParkNetwork
             @display("p=50,75;is=s");
         }
         configurator: Ipv4NetworkConfigurator {
-            @display("p=690,184.92;is=s");
+            @display("p=966,229;is=s");
         }
         //        router: Router {
         //            @display("p=419,81;i=device/smallrouter");
@@ -58,10 +61,10 @@ network ParkNetwork
             @display("p=690,24.84;is=s");
         }
         binder: Binder {
-            @display("p=690,264.96;is=s");
+            @display("p=966,302;is=s");
         }
         carrierAggregation: CarrierAggregation {
-            @display("p=691.38,342.24;is=s");
+            @display("p=966,385;is=s");
         }
         upf: Upf {
             @display("p=352,139");
@@ -81,14 +84,25 @@ network ParkNetwork
         ue[numUe]: NRUe {
             @display("p=89,431");
         }
-        ualcmp: UALCMP;
-
+        ualcmp: UALCMP {
+            @display("p=586,51");
+        }
         router: Router {
             @display("p=523,138");
         }
+		// cloud
+        router2: Router {
+            @display("p=815,135");
+        }
+        datacenterSwitch: EthernetSwitch {
+            @display("p=935,137");
+        }
 
+        cloudServer: StandardHost {
+            @display("p=935,68;is=n;i=device/server");
+        }
         server: StandardHost {
-            @display("p=690,139;is=n;i=device/server");
+            @display("p=523,212;is=n;i=device/server");
         }
 
         car[numParkedCar]: MecCar {
@@ -103,13 +117,18 @@ network ParkNetwork
 
         // Core links
         server.pppg++ <--> Eth10G <--> router.pppg++;
-        router.pppg++ <--> Eth10G <--> upf.pppg++;
-        router.pppg++ <--> Eth10G <--> upf.filterGate;
+        router.pppg++ <--> Eth10G {  length = 1000m; } <--> upf.pppg++;
+        router.pppg++ <--> Eth10G {  length = 1000m; } <--> upf.filterGate;
+
         ualcmp.ppp++ <--> Eth10G <--> router.pppg++;
+
+        router.pppg++ <--> Eth100G {  length = 1000km; } <--> router2.pppg++;
+        router2.ethg++ <--> Eth1G <--> datacenterSwitch.ethg++;
+        datacenterSwitch.ethg++ <--> Eth1G <--> cloudServer.ethg++;
         mecOrchestrator.pppg++ <--> Eth10G <--> router.pppg++;
 
         // Edge links
-        upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
+        upf.pppg++ <--> Eth10G {  length = 1000m; } <--> iUpf.pppg++;
         iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
         mechost1.ppp++ <--> Eth10G <--> iUpf.pppg++;
         mechost1.ppp++ <--> Eth10G <--> gNodeB1.pppMEHost;

@@ -85,3 +85,10 @@ vim files
 Makefile
 
 simulation-examples
+
+
+*.tar.gz
+*.png
+*.pdf
+*.svg
+simulations/simforslides/*

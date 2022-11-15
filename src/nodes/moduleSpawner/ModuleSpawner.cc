@@ -132,10 +132,11 @@ void ModuleSpawner::handleMessage(cMessage *msg)
         double lambda_cars = lambdaValuesVehicles[timeline] * parkcapacity_;
         int burst_cars_dim = static_cast<int>(poisson(lambda_cars)); // poisson distribution cars
         int burst_ue_dim = static_cast<int>(poisson(lambdaValuesUEs[timeline])); // poisson distribution ues
-        burst_ue_dim = burst_ue_dim;
+//        burst_ue_dim = burst_ue_dim;
 
         // if there are no initial cars parked and we are not going to generate it in 3600s then we should
         // include the MECHost
+        std::cout << "BURST CAR DIM " << burst_cars_dim << endl;
         if(initialParkedCars == 0 && burst_cars_dim == 0){
            includeMecHost(true);
         }
@@ -153,7 +154,7 @@ void ModuleSpawner::handleMessage(cMessage *msg)
         }
         emit(parkedCars_, counter);
 
-        emit(ues_, UEcounter);
+        emit(ues_, burst_ue_dim);
 
         generatePCBurst(burst_cars_dim);
         generateUEBurst(burst_ue_dim);

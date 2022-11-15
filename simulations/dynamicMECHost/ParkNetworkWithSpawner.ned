@@ -105,13 +105,13 @@ network ParkNetworkWithSpawner
 
         // Core links
         server.pppg++ <--> Eth10G <--> router.pppg++;
-        router.pppg++ <--> Eth10G <--> upf.pppg++;
-        router.pppg++ <--> Eth10G <--> upf.filterGate;
+        router.pppg++ <--> Eth10G {length=1000m;} <--> upf.pppg++;
+        router.pppg++ <--> Eth10G {length=1000m;} <--> upf.filterGate;
         ualcmp.ppp++ <--> Eth10G <--> router.pppg++;
         mecOrchestrator.pppg++ <--> Eth10G <--> router.pppg++;
 
         // Edge links
-        upf.pppg++ <--> Eth10G <--> iUpf.pppg++;
+        upf.pppg++ <--> Eth10G {length=1000m;} <--> iUpf.pppg++;
         iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
         mechost1.ppp++ <--> Eth10G <--> iUpf.pppg++;
         mechost1.ppp++ <--> Eth10G <--> gNodeB1.pppMEHost;
