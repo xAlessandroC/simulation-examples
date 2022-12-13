@@ -1,7 +1,7 @@
 {
 "appDid" : "WAMECAPP",
-"appName" : "MECWarningAlertApp",
-"appProvider" : "simu5g.apps.mec.WarningAlert.MECWarningAlertApp",
+"appName" : "ExtMECWarningAlertApp",
+"appProvider" : "simu5g.apps.mec.DynamicMecApps.WarningAlertApp.ExtMECWarningAlertApp",
 "appInfoName" : "appInfoName_",
 "appDescription" : "appDescription_",
 "virtualComputeDescriptor" :{
