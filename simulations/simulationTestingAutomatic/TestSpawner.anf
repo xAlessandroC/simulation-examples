@@ -5,7 +5,7 @@
         <input pattern="/simulation-examples/simulations/simulationTestingAutomatic/results/TestSpawner-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/barchart.png" id="1628260021" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="1501354055" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -668,7 +668,7 @@ plt.ylabel("Total Migrations")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/barchart.png" id="1589476471" name="Number of Migration (3D)" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="1680185834" name="Number of Migration (3D)" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -1345,7 +1345,7 @@ plt.yticks(np.arange(0,19,2))
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/barchart.png" id="1441790730" name="Number of Migration (Stacked)" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="752041639" name="Number of Migration (Stacked)" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -2058,7 +2058,7 @@ plt.savefig("migrations_1.pdf", bbox_inches='tight', dpi=150)
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1557583298" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1991191104" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -2725,7 +2725,7 @@ plt.ylabel("Parked Vehicles")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1260167507" name="ues" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1358364486" name="ues" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -3352,7 +3352,7 @@ print(df)
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="287308847" name="downtime" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1974229230" name="downtime" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import matplotlib.pyplot as plt
 from functools import reduce
@@ -4075,7 +4075,7 @@ plt.legend([bps[0]["boxes"][0],bps[1]["boxes"][0],bps[2]["boxes"][0],bps[3]["box
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="963950176" name="downtime rev" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1275351432" name="downtime rev" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
