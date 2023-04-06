@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <analysis version="2">
     <inputs>
-        <input pattern="/simulation-examples/simulations/dynamicMECHost/results/TestSubscription-*.vec"/>
-        <input pattern="/simulation-examples/simulations/dynamicMECHost/results/TestSubscription-*.sca"/>
+        <input pattern="/simulation-examples/simulations/allocationTimeSimulationNew/results/TestSubscription-*.vec"/>
+        <input pattern="/simulation-examples/simulations/allocationTimeSimulationNew/results/TestSubscription-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/linechart.png" id="594757465" name="test" template="linechart_native" type="LINE">
+        <chart icon="icons/full/obj/linechart.png" id="1325967055" name="test" template="linechart_native" type="LINE">
             <script><![CDATA[import math
 from omnetpp.scave import results, chart, utils
 
@@ -641,7 +641,7 @@ utils.export_data_if_needed(df, props)
             <property name="image_export_width" value="6"/>
             <property name="include_fields" value="false"/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1084082690" name="DownTime" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="592336693" name="DownTime" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import matplotlib.pyplot as plt
 from functools import reduce
@@ -1333,7 +1333,7 @@ plt.xlabel("NUMUE")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/histogramchart.png" id="1031488457" name="Ping Comparison Time" template="boxwhiskers" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/histogramchart.png" id="1884832553" name="Ping Comparison Time" template="boxwhiskers" type="MATPLOTLIB">
             <script><![CDATA[import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -1863,7 +1863,7 @@ plt.legend()
             <property name="matplotlibrc" value=""/>
             <property name="include_fields" value="false"/>
         </chart>
-        <chart icon="icons/full/obj/histogramchart.png" id="1818655901" name="Allocation Time" template="histogramchart_vectors_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/histogramchart.png" id="932133499" name="Allocation Time" template="histogramchart_vectors_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import numpy as np
 from omnetpp.scave import results, chart, utils
@@ -2475,12 +2475,14 @@ Show over_underflow cell?
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1926114205" name="AllocationTime linegraph" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1997177271" name="AllocationTime linegraph" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 from omnetpp.scave import results, chart, utils
 import pandas as pd
 import matplotlib.pyplot as plt
 from reportlab.lib.styles import LineStyle
+from matplotlib.ticker import StrMethodFormatter
+import matplotlib.ticker as ticker
 
 # markers
 markers = ["o", "X", "*", "p", "s", "P"]
@@ -2523,21 +2525,28 @@ numues = df_grouped["NUMUE"].unique()
 print(numues)
 print(df_grouped)
 print(df_grouped["NUMCARS"].unique())
-
+plt.rcParams.update({'font.size': '22', 'font.family':'Times New Roman'})
+plt.tight_layout(pad=0.4, w_pad=1, h_pad=1.0)
+plt.gcf().set_size_inches(10,6)
 for i, cars in enumerate(df_grouped["NUMCARS"].unique()):
+    if cars == 50 or cars == 150:
+        continue
     means = df_grouped[df_grouped["NUMCARS"] == cars]["mean"].array
     stddevs = df_grouped[df_grouped["NUMCARS"] == cars]["stddev"].array
     print("len ues {}; len means {}".format(len(numues), len(means)))
     if len(numues) == len(means):
         ues = numues[:]
         values = means[:]
-        plt.errorbar(ues, values, marker=markers[i], markersize=7, linestyle="dashed", linewidth=1,label="{} parked cars".format(cars))
+        plt.errorbar(ues, values, marker=markers[i], markersize=7, linestyle="dashed", linewidth=3,label="{} parked cars".format(cars))
     if len(numues) > len(means):
-        plt.errorbar(numues[:-(len(numues) - len(means))], means, marker=markers[i], markersize=7, linestyle="dashed", linewidth=1,label="{} parked cars".format(cars))
+        plt.errorbar(numues[:-(len(numues) - len(means))], means, marker=markers[i], markersize=8, linestyle="dashed", linewidth=3,label="{} parked cars".format(cars))
 
 #print(df_grouped.loc[df_grouped["NUMCARS"] == 50])
 #plt.errorbar([50], df_grouped.loc([df_grouped["NUMCARS"] == 50 & df_grouped["NUMUE"] == 50])["mean"].array, marker=markers[i], markersize=7, linestyle="dashed", linewidth=1,label="{} parked cars".format(cars))
-    
+ticks = ticker.FuncFormatter(lambda y, pos: round(y*1000, 1))
+plt.gca().yaxis.set_major_formatter(ticks)
+
+   
 plt.xticks(numues, numues)
 plt.legend(loc="upper left")
 plt.grid(linestyle="--", linewidth=0.2)
@@ -2545,6 +2554,7 @@ plt.grid(linestyle="--", linewidth=0.2)
 plt.xlabel("UEs")
 plt.ylabel("Allocation Time in secs")
 
+plt.savefig("allocationTime.pdf", bbox_inches='tight', pad_inches=0.1, transparent=True)
 
 
 
@@ -3146,7 +3156,7 @@ plt.ylabel("Allocation Time in secs")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="550616374" name="Ping Comparison Time linegraph" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1934677224" name="Ping Comparison Time linegraph" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 from omnetpp.scave import results, chart, utils
 import pandas as pd
@@ -3882,7 +3892,7 @@ plt.savefig("rtt_1.pdf", bbox_inches='tight', dpi=150)
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/barchart.png" id="1315765258" name="Average Num App Per Car" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="2125235185" name="Average Num App Per Car" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import numpy as np
 import matplotlib.pyplot as plt
 from omnetpp.scave import results, chart, utils

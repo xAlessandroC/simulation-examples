@@ -49,11 +49,17 @@ void ModuleSpawner::initialize(int stage)
     delta = par("delta").doubleValue();
 
     initFromFile = par("initFromFile").boolValue();
+    generateFromFile = par("generateFromFile").boolValue();
     filename_ << "spawnerInitData-" << parkcapacity_ << ".txt";
     if(initFromFile){
         initializeFromFile();
     }
 
+    if(generateFromFile)
+    {
+        loadGenerators();
+        std::cout << "Loaded generators" << endl;
+    }
     getParentModule()->subscribe("logicTerminated", this);
     getParentModule()->subscribe("parkingReleased", this);
 
@@ -66,6 +72,11 @@ void ModuleSpawner::initialize(int stage)
 
     scheduleAt(intervalStart+5, burstGeneration_);
     scheduleAt(intervalStart+0.1, initializePark_);
+//    crngUes = new cRNG();
+////    crngUes->getTwister
+//    crngCars = getRNG(PARKEDCARS);
+//    crngCars->setSeed(6789);
+
 }
 
 void ModuleSpawner::initializeFromFile(){
@@ -99,8 +110,11 @@ void ModuleSpawner::handleMessage(cMessage *msg)
     EV << "ModuleSpawner::new message arrived" << endl;
     if(strcmp(msg->getName(), "initializePark") == 0)
     {
-        initializePark();
-        initializeUes();
+        if(timeline != 0)
+        {
+            initializePark();
+            initializeUes();
+        }
     }
     else if(strcmp(msg->getName(), "createNewPC") == 0){
         EV << "Generating PC at " << simTime() << endl;
@@ -128,10 +142,19 @@ void ModuleSpawner::handleMessage(cMessage *msg)
 
         // Possibile problema: generazione di due PC o due UE nello stesso esatto instante (stesso double), molto improbabile
         // Possibile problema: UE generate prima di una PC
-        // TODO inserire dimensione burst basato su distribuzioni
-        double lambda_cars = lambdaValuesVehicles[timeline] * parkcapacity_;
-        int burst_cars_dim = static_cast<int>(poisson(lambda_cars)); // poisson distribution cars
-        int burst_ue_dim = static_cast<int>(poisson(lambdaValuesUEs[timeline])); // poisson distribution ues
+        int burst_cars_dim;
+        int burst_ue_dim;
+        if(generateFromFile)
+        {
+            burst_cars_dim = static_cast<int>(cars[timeline]);
+            burst_ue_dim = static_cast<int>(ues[timeline]);
+        }
+        else
+        {
+            double lambda_cars = lambdaValuesVehicles[timeline] * parkcapacity_;
+            burst_cars_dim = static_cast<int>(poisson(lambda_cars)); // poisson distribution cars
+            burst_ue_dim = static_cast<int>(poisson(lambdaValuesUEs[timeline])); // poisson distribution ues
+        }
 //        burst_ue_dim = burst_ue_dim;
 
         // if there are no initial cars parked and we are not going to generate it in 3600s then we should
@@ -383,20 +406,49 @@ void ModuleSpawner::finish()
 
     std::ofstream datafile;
     datafile.open(filename_.str().c_str(), std::ios::trunc);
-    datafile << PCcounter << endl;
-//    datafile <<"{";
-    for(auto pc : PCs)
+    if(timeline == 23)
     {
-        parkTime = pc->getSubmodule("app", 0)->par("parkTime").doubleValue();
-        index = std::atoi(pc->getName()+2);
-        remainingTime = parkTime + startParkTimes[index-1] - simTime().dbl();
-//        std::cout << "Time park remaining for vehicle: " << index << " " << remainingTime << "s" << endl;
-        datafile << remainingTime << ",";
+        datafile << 0 << endl;
     }
-//    datafile <<"}"<<endl;
+    else
+    {
+        datafile << PCcounter << endl;
+    //    datafile <<"{";
+        for(auto pc : PCs)
+        {
+            parkTime = pc->getSubmodule("app", 0)->par("parkTime").doubleValue();
+            index = std::atoi(pc->getName()+2);
+            remainingTime = parkTime + startParkTimes[index-1] - simTime().dbl();
+    //        std::cout << "Time park remaining for vehicle: " << index << " " << remainingTime << "s" << endl;
+            datafile << remainingTime << ",";
+        }
+    //    datafile <<"}"<<endl;
+    }
 
     datafile.close();
 
+}
+
+void ModuleSpawner::loadGenerators()
+{
+    std::string fileName = "generatorFiles/cars_" + std::to_string(parkcapacity_) + ".txt";
+    std::ifstream carsFile(fileName);
+    std::ifstream uesFile("generatorFiles/ues.txt");
+
+    std::string textRead;
+
+    while(getline(carsFile, textRead))
+    {
+        cars.push_back(std::atoi(textRead.c_str()));
+    }
+
+    while(getline(uesFile, textRead))
+    {
+        ues.push_back(std::atoi(textRead.c_str()));
+    }
+
+    carsFile.close();
+    uesFile.close();
 }
 
 

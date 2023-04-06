@@ -48,6 +48,7 @@ OBJS = \
     $O/src/app/instantiationmecpm/InstantiationMecpm.o \
     $O/src/app/orchestratorTesters/MEOTester.o \
     $O/src/app/registrationvim/RegistrationVim.o \
+    $O/src/nodes/Test/TestRandomNumber.o \
     $O/src/nodes/moduleSpawner/ModuleSpawner.o \
     $O/src/nodes/nodeA/NodeA.o \
     $O/src/nodes/nodeB/NodeB.o \

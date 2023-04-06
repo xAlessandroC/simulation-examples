@@ -31,6 +31,7 @@ simple ModuleSpawner
        	int initialUes = default(0);
        	int initTimeLine = default(0);
        	bool initFromFile = default(false);
+       	bool generateFromFile = default(false);
        	
        	@signal[parkedCars](type=long);
     	@statistic[parkedCars](source=parkedCars; record=vector; interpolationmode=none);

@@ -8,6 +8,9 @@
 #include <iostream>
 #include <fstream>
 
+#define UES 0
+#define PARKEDCARS 1
+
 using namespace omnetpp;
 
 class ModuleSpawner : public cSimpleModule, public cIListener
@@ -25,6 +28,11 @@ class ModuleSpawner : public cSimpleModule, public cIListener
     double delta;
 
     bool initFromFile;
+
+    // Generate ues and parked cars by reading a file
+    bool generateFromFile;
+    std::vector<float> cars;
+    std::vector<int> ues;
 
     // PC parameters
     int PCcounter;
@@ -51,6 +59,12 @@ class ModuleSpawner : public cSimpleModule, public cIListener
     std::vector<double> startParkTimes;
 
     std::stringstream filename_;
+
+//    cRNG *crngUes;
+//    cRNG *crngCars;
+//    cMarsenneTwister *twisterUe;
+//    cMarsenneTwister *twisterCars;
+
 
 //    std::vector <double> initParkTimes {5980.12, 1564.98, 7742.84, 25027.3, 25436.4}; // from 0 to 21600
 //    std::vector<double> initParkTimes {542.1, 17827.1, 18236.1, 11799.9}; // from 21600 to 28800
@@ -135,6 +149,7 @@ class ModuleSpawner : public cSimpleModule, public cIListener
         virtual void finish() override;
         virtual void initializePark();
         virtual void initializeUes();
+        virtual void loadGenerators();
         virtual void generateNewPC(double initParkTime=-1);
         virtual void generateNewUE();
         virtual void generatePCBurst(int burstDim);

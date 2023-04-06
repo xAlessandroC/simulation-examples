@@ -5,13 +5,15 @@
         <input pattern="/simulation-examples/simulations/testingLocalResources/results/TestSubscription-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/linechart.png" id="1188442886" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="39963144" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.core._multiarray_umath import scalar
+from matplotlib.ticker import StrMethodFormatter
+import matplotlib.ticker as ticker
 
 # get chart properties
 props = chart.get_properties()
@@ -39,13 +41,20 @@ if df.empty:
 # apply vector operations
 #df = utils.perform_vector_ops(df, props["vector_operations"])
 df_joining = df.loc[df["name"]== "joiningTime:mean"][["NUMCARS","value", "repetition"]]
-df_leaving = df.loc[df["name"]== "leavingTime:mean"][["NUMCARS","value", "repetition"]]
+df_joining = df_joining.dropna()
 
-print(df_leaving)
+df_leaving = df.loc[df["name"]== "leavingTime:mean"][["NUMCARS","value", "repetition"]]
+df_leaving = df_leaving.dropna()
+#print(df_leaving[df_leaving['value'].isna()])
 # plot
+
+#df_joining_std = df_joining
+#df_joining_std = df_joining_std.groupby(["NUMCARS"], as_index=False).agg(['mean', 'std'])
+#print(df_joining_std)
 
 df_joining = df_joining.groupby("NUMCARS").mean().reset_index()
 df_leaving = df_leaving.groupby("NUMCARS").mean().reset_index()
+
 
 
 df_joining["NUMCARS"] = df_joining["NUMCARS"].astype(int)
@@ -56,9 +65,37 @@ df_joining = df_joining.sort_values(by=["NUMCARS"])
 df_leaving = df_leaving.sort_values(by=["NUMCARS"])
 print(df_joining)
 print(df_leaving)
+ticks = ticker.FuncFormatter(lambda y, pos: round(y*1000, 1))
 
-plt.plot(df_joining["NUMCARS"].to_numpy(),df_joining["value"].to_numpy())
-plt.plot(df_leaving["NUMCARS"].to_numpy(),df_leaving["value"].to_numpy())
+plt.rcParams.update({'font.size': '22', 'font.family':'Times New Roman'})
+plt.tight_layout(pad=0.4, w_pad=1, h_pad=1.0)
+plt.gcf().set_size_inches(10,6)
+
+ax = plt.subplot()
+
+ax2 = ax.twinx()
+ax.grid(linestyle="--", linewidth=0.2)
+array_colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]
+l1, = ax.plot(df_joining["NUMCARS"].to_numpy(),df_joining["value"].to_numpy(), color = array_colors[0], linewidth=3, marker='s', markersize=7,label="Joining time")
+ax.yaxis.set_major_formatter(ticks)
+
+l2, = ax2.plot(df_leaving["NUMCARS"].to_numpy(),df_leaving["value"].to_numpy(), color = array_colors[1],  linewidth=3, marker='o', markersize=7, label="Leaving time")
+ax2.yaxis.set_major_formatter(ticks)
+
+
+ax.set_ylim([0.007125,0.04])
+ax2.set_ylim([0.007,0.0079])
+
+ax.set_xlabel("Number of Cars")
+ax.set_ylabel("Joining Time (ms)")
+ax2.set_ylabel("Leaving Time (ms)")
+
+
+plt.legend([l1,l2], ["Joining time", "Leaving time"], loc="upper left")
+
+plt.savefig("protocolsTime.pdf", bbox_inches='tight', pad_inches=0, transparent=True)
+#plt.yticks([0,0.007125, 0.007141, 0.007146, 0.007182, 0.0072, 0.01, 0.03])
+
 
 
 
