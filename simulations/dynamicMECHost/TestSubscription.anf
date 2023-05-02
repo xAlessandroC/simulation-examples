@@ -3212,6 +3212,8 @@ df_grouped_core = df_core.groupby(["NUMUE", "NUMCARS", "SKIP"]).mean().reset_ind
 df_grouped_remote = df_grouped.loc[df_grouped["SKIP"] == "true"]
 
 temp_df = df_grouped_remote.loc[df_grouped_remote["NUMCARS"]==50]
+#df_grouped_remote = df_grouped_remote.loc[df_grouped_remote["NUMCARS"]==50]
+
 #df_grouped_local = df_grouped.loc[df_grouped["SKIP"] == "false"]
 #df_grouped_local = df_grouped_local.loc[df_grouped_local["NUMCARS"] == 0]
 #df_grouped_local = df_grouped_local.loc["PingApp[initial]" in df_grouped_local["module"]]

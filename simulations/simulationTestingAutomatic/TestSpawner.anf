@@ -5,7 +5,7 @@
         <input pattern="/simulation-examples/simulations/simulationTestingAutomatic/results/TestSpawner-*.sca"/>
     </inputs>
     <charts>
-        <chart icon="icons/full/obj/barchart.png" id="224681677" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="573647817" name="Bar Chart with Matplotlib" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -668,7 +668,7 @@ plt.ylabel("Total Migrations")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/barchart.png" id="1841227811" name="Number of Migration (3D)" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="218424820" name="Number of Migration (3D)" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -1345,7 +1345,7 @@ plt.yticks(np.arange(0,19,2))
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/barchart.png" id="1436790482" name="Number of Migration (Stacked)" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="228963843" name="Number of Migration (Stacked)" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -2059,7 +2059,7 @@ plt.savefig("migrations_1.pdf", bbox_inches='tight', dpi=150)
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="17956460" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="622775244" name="Line Chart with Matplotlib" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -2726,7 +2726,7 @@ plt.ylabel("Parked Vehicles")
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="483156692" name="ues" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="1930384645" name="ues" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
@@ -3353,7 +3353,7 @@ print(df)
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1513088201" name="downtime" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="61528865" name="downtime" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import matplotlib.pyplot as plt
 from functools import reduce
@@ -3398,7 +3398,10 @@ df = utils.perform_vector_ops(df, props["vector_operations"])
 main_df = pd.DataFrame()
 df["PARKCAPACITY"] = df["PARKCAPACITY"].astype(int)
 
-df = df.loc[df["PARKCAPACITY"] <= 200]
+df = df.loc[df["PARKCAPACITY"] == 150]
+#print(df)
+df = df.loc[df["SCHEDULING"]=="\"ROUND_ROBIN\""]
+print(df)
 #df = df.loc[df["SKIP"] == "true"]
 main_df = df[["module", "vecvalue", "PARKCAPACITY", "TIMELINE", "repetition"]].reset_index(drop=True)
 
@@ -3439,13 +3442,12 @@ for actualTime in timelines:
     entry=[]
     sub_positions = []
    
-    for capacity in [50,100]:
-        print(capacity)
-        tempdf = main_df.loc[main_df["PARKCAPACITY"] == capacity]
-        tempdf = tempdf.loc[tempdf["TIMELINE"] == actualTime]
-        array_index = int((capacity/50) - 1)
-        entry.append(tempdf["migTime"].to_numpy())
-        sub_positions.append(positions_markers[array_index])
+    
+    #tempdf = main_df.loc[main_df["PARKCAPACITY"] == capacity]
+    tempdf = main_df.loc[main_df["TIMELINE"] == actualTime]
+    array_index = int((50/50) - 1)
+    entry.append(tempdf["migTime"].to_numpy())
+    sub_positions.append(positions_markers[array_index])
     print(entry)
 
     print("---")
@@ -4076,7 +4078,7 @@ plt.legend([bps[0]["boxes"][0],bps[1]["boxes"][0],bps[2]["boxes"][0],bps[3]["box
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/linechart.png" id="1631057667" name="downtime rev" template="linechart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/linechart.png" id="899735620" name="downtime rev" template="linechart_mpl" type="MATPLOTLIB">
             <script><![CDATA[import math
 import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
@@ -4836,7 +4838,7 @@ plt.savefig("downtime_1.pdf", bbox_inches='tight', dpi=150)
             <property name="image_export_width" value="6"/>
             <property name="matplotlibrc" value=""/>
         </chart>
-        <chart icon="icons/full/obj/barchart.png" id="977568181" name="Scheduling" template="barchart_mpl" type="MATPLOTLIB">
+        <chart icon="icons/full/obj/barchart.png" id="180991886" name="Scheduling" template="barchart_mpl" type="MATPLOTLIB">
             <script><![CDATA[from omnetpp.scave import results, chart, utils
 import pandas as pd
 import numpy as np
