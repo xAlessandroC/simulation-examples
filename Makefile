@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for simulation-examples
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -O out -KINET4_4_PROJ=/home/simulator/workspace/inet4.4 -KSIMU5G_PROJ=../Simu5G -KVEINS_INET_PROJ=/home/simulator/workspace/veins_inet -KVEINS_PROJ=/home/simulator/workspace/veins -DINET_IMPORT -DVEINS_INET_IMPORT -I. -I$$\(INET4_4_PROJ\)/src -I$$\(SIMU5G_PROJ\)/src -I$$\(VEINS_INET_PROJ\)/src -I$$\(VEINS_PROJ\)/src -Isrc -L$$\(INET4_4_PROJ\)/src -L$$\(SIMU5G_PROJ\)/src -L$$\(VEINS_INET_PROJ\)/src -lINET$$\(D\) -lsimu5g$$\(D\) -lveins_inet$$\(D\)
+#  opp_makemake -f --deep -O out -KINET4_5_PROJ=/home/facsimulator/omnetpp-6.0.1/workspace/inet4.5 -KSIMU5G_PROJ=../Simu5G -KVEINS_INET_PROJ=/home/facsimulator/omnetpp-6.0.1/workspace/veins_inet -KVEINS_PROJ=/home/facsimulator/omnetpp-6.0.1/workspace/veins -DINET_IMPORT -DVEINS_INET_IMPORT -I. -I$$\(INET4_5_PROJ\)/src -I$$\(SIMU5G_PROJ\)/src -I$$\(VEINS_INET_PROJ\)/src -I$$\(VEINS_PROJ\)/src -Isrc -L$$\(INET4_5_PROJ\)/src -L$$\(SIMU5G_PROJ\)/src -L$$\(VEINS_INET_PROJ\)/src -lINET$$\(D\) -lsimu5g$$\(D\) -lveins_inet$$\(D\)
 #
 
 # Name of target to be created (-o option)
@@ -21,7 +21,7 @@ USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(QTENV_LIBS) $(CMDENV_LIBS)
 # C++ include paths (with -I)
 INCLUDE_PATH = \
     -I. \
-    -I$(INET4_4_PROJ)/src \
+    -I$(INET4_5_PROJ)/src \
     -I$(SIMU5G_PROJ)/src \
     -I$(VEINS_INET_PROJ)/src \
     -I$(VEINS_PROJ)/src \
@@ -31,7 +31,7 @@ INCLUDE_PATH = \
 EXTRA_OBJS =
 
 # Additional libraries (-L, -l options)
-LIBS = $(LDFLAG_LIBPATH)$(INET4_4_PROJ)/src $(LDFLAG_LIBPATH)$(SIMU5G_PROJ)/src $(LDFLAG_LIBPATH)$(VEINS_INET_PROJ)/src  -lINET$(D) -lsimu5g$(D) -lveins_inet$(D)
+LIBS = $(LDFLAG_LIBPATH)$(INET4_5_PROJ)/src $(LDFLAG_LIBPATH)$(SIMU5G_PROJ)/src $(LDFLAG_LIBPATH)$(VEINS_INET_PROJ)/src  -lINET$(D) -lsimu5g$(D) -lveins_inet$(D)
 
 # Output directory
 PROJECT_OUTPUT_DIR = out
@@ -62,10 +62,10 @@ MSGFILES = \
 SMFILES =
 
 # Other makefile variables (-K)
-INET4_4_PROJ=/home/simulator/workspace/inet4.4
+INET4_5_PROJ=/home/facsimulator/omnetpp-6.0.1/workspace/inet4.5
 SIMU5G_PROJ=../Simu5G
-VEINS_INET_PROJ=/home/simulator/workspace/veins_inet
-VEINS_PROJ=/home/simulator/workspace/veins
+VEINS_INET_PROJ=/home/facsimulator/omnetpp-6.0.1/workspace/veins_inet
+VEINS_PROJ=/home/facsimulator/omnetpp-6.0.1/workspace/veins
 
 #------------------------------------------------------------------------------
 
@@ -86,7 +86,7 @@ include $(CONFIGFILE)
 # Simulation kernel and user interface libraries
 OMNETPP_LIBS = $(OPPMAIN_LIB) $(USERIF_LIBS) $(KERNEL_LIBS) $(SYS_LIBS)
 ifneq ($(PLATFORM),win32)
-LIBS += -Wl,-rpath,$(abspath $(INET4_4_PROJ)/src) -Wl,-rpath,$(abspath $(SIMU5G_PROJ)/src) -Wl,-rpath,$(abspath $(VEINS_INET_PROJ)/src)
+LIBS += -Wl,-rpath,$(abspath $(INET4_5_PROJ)/src) -Wl,-rpath,$(abspath $(SIMU5G_PROJ)/src) -Wl,-rpath,$(abspath $(VEINS_INET_PROJ)/src)
 endif
 
 COPTS = $(CFLAGS) $(IMPORT_DEFINES) -DINET_IMPORT -DVEINS_INET_IMPORT $(INCLUDE_PATH) -I$(OMNETPP_INCL_DIR)
@@ -127,7 +127,8 @@ $O/$(TARGET): $(OBJS)  $(wildcard $(EXTRA_OBJS)) Makefile $(CONFIGFILE)
 
 .PHONY: all clean cleanall depend msgheaders smheaders
 
-.SUFFIXES: .cc
+# disabling all implicit rules
+.SUFFIXES :
 
 $O/%.o: %.cc $(COPTS_FILE) | msgheaders smheaders
 	@$(MKPATH) $(dir $@)

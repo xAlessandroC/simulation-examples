@@ -3,7 +3,7 @@
 	<name>simulation-examples</name>
 	<comment></comment>
 	<projects>
-		<project>inet4.4</project>
+		<project>inet4.5</project>
 		<project>simu5G</project>
 		<project>veins_inet</project>
 	</projects>

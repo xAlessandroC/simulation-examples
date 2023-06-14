@@ -63,8 +63,8 @@ void MobilityTester::handleMessage(cMessage *msg)
     {
         if(msg->arrivedOn("socketIn"))
         {
-            ASSERT(tcpSocket && tcpSocket.belongsToSocket(msg));
-            tcpSocket.processMessage(msg);
+           if(tcpSocket.belongsToSocket(msg))
+                tcpSocket.processMessage(msg);
         }
 
     }
