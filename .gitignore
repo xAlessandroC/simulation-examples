@@ -43,8 +43,8 @@ backups
 *.FAILED
 *.UPDATED
 *.ERROR
-.cproject
-.project
+#.cproject
+#.project
 ui/com.simulte.configeditor/bin/
 
 # ignore result folders
@@ -77,7 +77,7 @@ vim files
 .qtenvrc.*
 
 # project file 
-.cproject
+#.cproject
 
 # files for performance evaluation
 *.ipynb
