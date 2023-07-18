@@ -1,0 +1,30 @@
+{
+"appDid" : "WAMECAPP",
+"appName" : "ExtMECWarningAlertApp",
+"appProvider" : "simu5g.apps.mec.DynamicMecApps.WarningAlertApp.ExtMECWarningAlertApp",
+"appInfoName" : "appInfoName_",
+"appDescription" : "appDescription_",
+"virtualComputeDescriptor" :{
+    "virtualDisk": 10,
+    "virtualCpu" : 1500,
+    "virtualMemory":10
+    },
+"appServiceRequired": [
+    {
+        "ServiceDependency" :{
+            "serName" : "LocationService",
+            "version" : "v2",
+            "serCategory": "Location"
+        }
+    },
+    {
+        "ServiceDependency" :{
+            "serName" : "ApplicationMobilityService",
+            "version" : "v1",
+            "serCategory": "Mobility"
+        }
+    }
+],
+
+"omnetppServiceRequired": "MEWarningAlertService"
+}
