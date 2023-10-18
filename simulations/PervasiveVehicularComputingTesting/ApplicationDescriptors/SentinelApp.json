@@ -1,0 +1,23 @@
+{
+"appDid" : "SentApp",
+"appName" : "SentinelMecApp",
+"appProvider" : "simu5g.apps.mec.DynamicMecApps.SentinelApp.SentinelMecApp",
+"appInfoName" : "appInfoName_",
+"appDescription" : "appDescription_",
+"appDeploymentLocation": "local",
+"appDeployment": "*",
+"virtualComputeDescriptor" :{
+    "virtualDisk": 10,
+    "virtualCpu" : 1500,
+    "virtualMemory":10
+    },
+"appServiceRequired": [
+    {
+        "ServiceDependency" :{
+            "serName" : "RNIService",
+            "version" : "v2",
+            "serCategory": "RNI"
+        }
+    }
+]
+}
