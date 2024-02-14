@@ -69,10 +69,15 @@ network PervasiveComputingSingleHostNet
         iUpf: Upf {
             @display("p=244,250");
         }
+        iUpf2: Upf {
+            @display("p=626,250");
+        }
         gNodeB1: gNodeB {
             @display("p=139,340;is=vl");
         }
-        
+        gNodeB2: gNodeB {
+            @display("p=724,340;is=vl");
+        }
         mecOrchestrator: MecOrchestratorHost {
             @display("p=285,45;is=n;i=device/server");
         }
@@ -113,10 +118,13 @@ network PervasiveComputingSingleHostNet
 
         // Edge links
         upf.pppg++ <--> Eth10G {  length = 1000m; } <--> iUpf.pppg++;
+        upf.pppg++ <--> Eth10G {  length = 1000m; } <--> iUpf2.pppg++;
         iUpf.pppg++ <--> Eth10G <--> gNodeB1.ppp;
+        iUpf2.pppg++ <--> Eth10G <--> gNodeB2.ppp;
         mechost1.ppp++ <--> Eth10G <--> iUpf.pppg++;
         mechost1.ppp++ <--> Eth10G <--> gNodeB1.pppMEHost;
 
+        gNodeB1.x2++ <--> Eth10G {  length = 800m; } <--> gNodeB2.x2++;
 }
 
 

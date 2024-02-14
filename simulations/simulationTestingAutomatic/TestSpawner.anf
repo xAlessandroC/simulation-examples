@@ -4899,8 +4899,16 @@ rects_remote_1 = plt.bar(timeline_list[10:22]+0.25, values['"BEST_FIRST"'][10:22
 rects_remote_2 = plt.bar(timeline_list[10:22]-0.25, values['"ROUND_ROBIN"'][10:22], width, label="Round Robin".format(50), edgecolor="#000000", color=array_colors[1])
 rects_remote_3 = plt.bar(timeline_list[10:22], values['"GAUSSIAN_ARNHEM_SCHEDULER"'][10:22], width, label="Custom Scheduler".format(50), edgecolor="#000000", color=array_colors[2])
 
+print("Round Robin")
 used_for_means = values['"ROUND_ROBIN"'][10:22]
 print(used_for_means)
+print("Best First")
+used_for_means = values['"BEST_FIRST"'][10:22]
+print(used_for_means)
+print("Custom")
+used_for_means = values['"GAUSSIAN_ARNHEM_SCHEDULER"'][10:22]
+print(used_for_means)
+
 print(used_for_means.mean())
 plt.xlabel("Time")
 plt.ylabel("Number of Migrations")
